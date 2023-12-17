@@ -1,0 +1,20 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+#canvas {
+  display: block;
+}
+
+.button {
+  padding: 12;
+  background-color: white;
+  border-color: white;
+  border-radius: 8px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
