@@ -1,4 +1,5 @@
 import { drawAnimatedCanvas } from "./flows/dynamic";
+import { mouseTrail } from "./flows/mousetrail";
 import { drawStaticFlow } from "./flows/static";
 
 const button = document.querySelector("button");
@@ -17,7 +18,8 @@ const drawCanvas = () => {
   canvas.style.backgroundColor = "#000000";
 
   // drawStaticFlow(context, width, height);
-  drawAnimatedCanvas(context, width, height);
+  // drawAnimatedCanvas(context, width, height);
+  mouseTrail(context, width, height);
 };
 
 drawCanvas();

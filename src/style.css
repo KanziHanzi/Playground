@@ -18,3 +18,11 @@ body {
   bottom: 0;
   right: 0;
 }
+
+.dot {
+  position: absolute;
+  height: 6px;
+  width: 6px;
+  background-color: aqua;
+  border-radius: 2px;
+}
