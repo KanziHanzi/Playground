@@ -2,6 +2,16 @@ import p5 from "p5";
 import "p5/lib/addons/p5.sound";
 
 const sketch = (context: p5) => {
+  let sound: p5.SoundFile;
+
+  context.preload = () => {
+    sound = context.loadSound(
+      "src/assets/CantinaBand.mp3",
+      () => console.log("success"),
+      () => console.log("error")
+    );
+  };
+
   context.setup = () => {
     context.createCanvas(context.windowWidth, context.windowHeight);
     context.background("#000");
@@ -15,7 +25,11 @@ const sketch = (context: p5) => {
   };
 
   context.mousePressed = () => {
-    // context.background("#000");
+    if (sound.isPlaying()) {
+      sound.pause();
+    } else {
+      sound.play();
+    }
   };
 };
 
