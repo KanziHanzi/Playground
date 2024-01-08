@@ -1,37 +1,12 @@
-import p5 from "p5";
+import p5, { p5InstanceExtensions } from "p5";
 import "p5/lib/addons/p5.sound";
 import { drawCircle, handlePlayback } from "./utils";
+import { getRandomStrokeColor } from "../../utils/randomStroke";
 
 const sketch = (context: p5) => {
   let sound: p5.SoundFile;
   let fft: p5.FFT;
-
-  context.preload = () => {
-    sound = context.loadSound(
-      "src/flows/audioVisualizer/assets/CantinaBand.mp3",
-      () => console.log("success"),
-      () => console.log("error")
-    );
-  };
-
-  context.setup = () => {
-    context.createCanvas(context.windowWidth, context.windowHeight);
-    context.noFill();
-    context.angleMode("degrees");
-
-    fft = new p5.FFT();
-  };
-
-  context.draw = () => {
-    context.background("#000");
-    context.stroke("#fff");
-
-    context.translate(context.windowWidth / 2, context.windowHeight / 2);
-
-    const wave: number[] = fft.waveform();
-
-    drawCircle(context, wave);
-  };
+  const particles: Particle[] = [];
 
   context.mousePressed = () => {
     handlePlayback(sound, context);
@@ -44,6 +19,82 @@ const sketch = (context: p5) => {
 
     handlePlayback(sound, context);
   };
+
+  context.preload = () => {
+    sound = context.loadSound(
+      "src/flows/audioVisualizer/assets/CantinaBand.mp3",
+      () => console.log("success"),
+      () => console.log("error")
+    );
+    context.noLoop();
+  };
+
+  context.setup = () => {
+    context.createCanvas(context.windowWidth, context.windowHeight);
+    context.angleMode("degrees");
+
+    fft = new p5.FFT();
+  };
+
+  context.draw = () => {
+    context.background("#000");
+    context.stroke(getRandomStrokeColor());
+
+    context.translate(context.windowWidth / 2, context.windowHeight / 2);
+
+    const wave: number[] = fft.waveform();
+
+    drawCircle(context, wave);
+
+    const particle = new Particle(context);
+    particles.push(particle);
+
+    particles.forEach((particle: Particle) => {
+      particle.update();
+      particle.show();
+    });
+  };
 };
+
+const accelerationMultiplier = 0.001;
+const positionMultiplier = 270; // average between 180 and 360 radius
+
+interface IParticle {
+  show: () => void;
+  update: () => void;
+  hide: () => void;
+}
+
+class Particle implements IParticle {
+  private context: p5InstanceExtensions;
+  private position: p5.Vector;
+  private velocity: p5.Vector;
+  private acceleration: p5.Vector;
+  private size: number;
+
+  constructor(context: p5InstanceExtensions) {
+    this.context = context;
+
+    this.position = p5.Vector.random2D().mult(positionMultiplier);
+    this.velocity = context.createVector(0, 0);
+    this.acceleration = this.position
+      .copy()
+      .mult(Math.random() * accelerationMultiplier);
+    this.size = context.random(3, 5);
+  }
+
+  public update() {
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+  }
+
+  public show() {
+    this.context.noStroke();
+    this.context.fill(getRandomStrokeColor());
+    this.context.ellipse(this.position.x, this.position.y, this.size);
+  }
+
+  public hide() {}
+}
 
 new p5(sketch);
