@@ -43,6 +43,9 @@ const sketch = (context: p5) => {
 
     context.translate(context.windowWidth / 2, context.windowHeight / 2);
 
+    fft.analyze();
+    const amplitude = fft.getEnergy("bass");
+
     const wave: number[] = fft.waveform();
 
     drawCircle(context, wave);
@@ -55,19 +58,19 @@ const sketch = (context: p5) => {
         // remove particel from array if out of window bounds
         particles.splice(index, 1);
       } else {
-        particle.update();
+        particle.update(amplitude);
         particle.show();
       }
     });
   };
 };
 
-const accelerationMultiplier = 0.001;
+const accelerationMultiplier = 0.0001;
 const positionMultiplier = 360; // average between min and max y scale
 
 interface IParticle {
   show: () => void;
-  update: () => void;
+  update: (amplitude: number) => void;
   hide: () => void;
   isOutOfBounds: () => boolean;
 }
@@ -92,9 +95,14 @@ class Particle implements IParticle {
     this.color = getRandomStrokeColor();
   }
 
-  public update() {
+  public update(amplitude: number) {
     this.velocity.add(this.acceleration);
     this.position.add(this.velocity);
+    if (amplitude > 210) {
+      this.position.add(this.velocity);
+      this.position.add(this.velocity);
+      this.position.add(this.velocity);
+    }
   }
 
   public show() {
