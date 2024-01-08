@@ -7,8 +7,10 @@ const drawHalfCircle = (
   wave: number[],
   isMirrored?: boolean
 ) => {
+  context.noFill();
+
   context.beginShape();
-  for (let i = 0; i <= circleRadius; i ++) {
+  for (let i = 0; i <= circleRadius; i++) {
     const index = Math.floor(
       context.map(i, 0, circleRadius, 0, wave.length - 1)
     ); // interpolate waveform data to match the range of window size
