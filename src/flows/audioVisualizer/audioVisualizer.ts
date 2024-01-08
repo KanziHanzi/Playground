@@ -39,6 +39,7 @@ const sketch = (context: p5) => {
   context.draw = () => {
     context.background("#000");
     context.stroke(getRandomStrokeColor());
+    context.strokeWeight(3);
 
     context.translate(context.windowWidth / 2, context.windowHeight / 2);
 
@@ -49,20 +50,26 @@ const sketch = (context: p5) => {
     const particle = new Particle(context);
     particles.push(particle);
 
-    particles.forEach((particle: Particle) => {
-      particle.update();
-      particle.show();
+    particles.forEach((particle: Particle, index: number) => {
+      if (particle.isOutOfBounds()) {
+        // remove particel from array if out of window bounds
+        particles.splice(index, 1);
+      } else {
+        particle.update();
+        particle.show();
+      }
     });
   };
 };
 
 const accelerationMultiplier = 0.001;
-const positionMultiplier = 270; // average between 180 and 360 radius
+const positionMultiplier = 360; // average between min and max y scale
 
 interface IParticle {
   show: () => void;
   update: () => void;
   hide: () => void;
+  isOutOfBounds: () => boolean;
 }
 
 class Particle implements IParticle {
@@ -71,6 +78,7 @@ class Particle implements IParticle {
   private velocity: p5.Vector;
   private acceleration: p5.Vector;
   private size: number;
+  private color: string;
 
   constructor(context: p5InstanceExtensions) {
     this.context = context;
@@ -81,6 +89,7 @@ class Particle implements IParticle {
       .copy()
       .mult(Math.random() * accelerationMultiplier);
     this.size = context.random(3, 5);
+    this.color = getRandomStrokeColor();
   }
 
   public update() {
@@ -90,8 +99,22 @@ class Particle implements IParticle {
 
   public show() {
     this.context.noStroke();
-    this.context.fill(getRandomStrokeColor());
+    this.context.fill(this.color);
     this.context.ellipse(this.position.x, this.position.y, this.size);
+  }
+
+  public isOutOfBounds(): boolean {
+    switch (true) {
+      case this.position.x < -this.context.windowWidth / 2:
+        return true;
+      case this.position.x > this.context.windowWidth / 2:
+        return true;
+      case this.position.y < -this.context.windowHeight / 2:
+        return true;
+      case this.position.y > this.context.windowHeight / 2:
+      default:
+        return false;
+    }
   }
 
   public hide() {}
