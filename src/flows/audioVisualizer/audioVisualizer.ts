@@ -2,12 +2,14 @@ import p5 from "p5";
 import "p5/lib/addons/p5.sound";
 import { drawCircle, handlePlayback } from "./utils";
 import { getRandomStrokeColor } from "src/utils/randomStroke";
-import { Particle } from "./index";
+import { createParticle } from "./utils";
+import { Boundaries, Particle } from "src/common";
 
 const sketch = (context: p5) => {
   let sound: p5.SoundFile;
   let fft: p5.FFT;
   const particles: Particle[] = [];
+  let boundaries: Boundaries;
 
   context.mousePressed = () => {
     handlePlayback(sound, context);
@@ -41,6 +43,12 @@ const sketch = (context: p5) => {
     context.background("#000");
     context.stroke(getRandomStrokeColor());
     context.strokeWeight(3);
+    boundaries = {
+      x: context.windowWidth / 2,
+      y: context.windowHeight / 2,
+      negativeX: -context.windowWidth / 2,
+      negativeY: -context.windowHeight / 2,
+    };
 
     context.translate(context.windowWidth / 2, context.windowHeight / 2);
 
@@ -51,11 +59,11 @@ const sketch = (context: p5) => {
 
     drawCircle(context, wave);
 
-    const particle = new Particle(context);
+    const particle = createParticle(context);
     particles.push(particle);
 
     particles.forEach((particle: Particle, index: number) => {
-      if (particle.isOutOfBounds()) {
+      if (particle.isOutOfBounds(boundaries)) {
         // remove particel from array if out of window bounds
         particles.splice(index, 1);
       } else {
