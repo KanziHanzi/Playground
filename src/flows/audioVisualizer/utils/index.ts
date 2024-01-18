@@ -1,2 +1,3 @@
-export { handlePlayback } from "./controls";
-export { drawCircle } from "./shape";
+export * from "./controls";
+export * from "./shape";
+export * from "./particle";

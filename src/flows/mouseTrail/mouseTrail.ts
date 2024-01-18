@@ -1,8 +1,12 @@
 import p5 from "p5";
-import { Particle } from "./Particle";
+import { Boundaries, Particle } from "src/common";
+import { createParticle } from "./utils";
+
+const particleLimit = 100;
 
 const sketch = (context: p5) => {
   const particles: Particle[] = [];
+  let boundaries: Boundaries;
 
   context.setup = () => {
     context.createCanvas(context.windowWidth, context.windowHeight);
@@ -10,9 +14,15 @@ const sketch = (context: p5) => {
 
   context.draw = () => {
     context.background("#000");
+    boundaries = {
+      x: context.mouseX,
+      y: context.mouseY,
+      negativeX: -context.mouseX,
+      negativeY: -context.mouseY,
+    };
 
     particles.forEach((particle: Particle, index: number) => {
-      if (particle.isOutOfBounds(context.mouseX + 20, context.mouseY + 20)) {
+      if (particle.isOutOfBounds(boundaries)) {
         particles.splice(index, 1);
       } else {
         particle.update();
@@ -22,9 +32,9 @@ const sketch = (context: p5) => {
   };
 
   context.mouseMoved = () => {
-    if (particles.length >= 20) return;
+    if (particles.length >= particleLimit) return;
 
-    const particle = new Particle(context);
+    const particle = createParticle(context);
 
     particles.push(particle);
   };
