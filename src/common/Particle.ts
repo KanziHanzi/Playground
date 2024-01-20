@@ -10,6 +10,7 @@ export type Boundaries = {
 interface IParticle {
   show: () => void;
   update: (amplitude?: number) => void;
+  freeze: (ms: number) => void;
   isOutOfBounds: (boundaries: Boundaries) => boolean;
 }
 
@@ -62,6 +63,15 @@ export class Particle implements IParticle {
     this.context.noStroke();
     this.context.fill(this.color);
     this.context.ellipse(this.position.x, this.position.y, this.size);
+  }
+
+  public freeze(ms: number) {
+    const frozen = this.acceleration.copy();
+    this.velocity.sub(frozen); // substract acceleration vector to freeze particle in place
+
+    setTimeout(() => {
+      this.velocity.add(this.acceleration);
+    }, ms);
   }
 
   public isOutOfBounds(boundaries: Boundaries): boolean {
