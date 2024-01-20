@@ -2,7 +2,7 @@ import p5 from "p5";
 import { Boundaries, Particle } from "src/common";
 import { createParticle } from "./utils";
 
-const particleLimit = 100;
+const particleLimit = 1000;
 
 const sketch = (context: p5) => {
   const particles: Particle[] = [];
@@ -25,6 +25,7 @@ const sketch = (context: p5) => {
       if (particle.isOutOfBounds(boundaries)) {
         particles.splice(index, 1);
       } else {
+        particle.freeze(500);
         particle.update();
         particle.show();
       }
