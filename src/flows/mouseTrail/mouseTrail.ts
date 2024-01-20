@@ -15,10 +15,10 @@ const sketch = (context: p5) => {
   context.draw = () => {
     context.background("#000");
     boundaries = {
-      x: context.mouseX,
-      y: context.mouseY,
-      negativeX: -context.mouseX,
-      negativeY: -context.mouseY,
+      x: context.windowWidth,
+      y: context.windowHeight,
+      negativeX: -context.windowWidth,
+      negativeY: -context.windowHeight,
     };
 
     particles.forEach((particle: Particle, index: number) => {
