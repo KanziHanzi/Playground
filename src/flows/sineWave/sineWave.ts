@@ -1,21 +1,49 @@
 import p5 from "p5";
+import { getRandomStrokeColor } from "src/utils/randomStroke";
+
+const rectWidth = 600;
+const rectHeight = 600;
+
+const limit = 200;
 
 const sketch = (context: p5) => {
+  let width: number;
+  let height: number;
+
   context.preload = () => {
-    // pre load assets or do some stuff in advance before the "setup" method runs
+    width = context.windowWidth;
+    height = context.windowHeight;
   };
 
   context.setup = () => {
-    // setup canvas and any static params that won't change during renderr
-    context.createCanvas(context.windowWidth, context.windowHeight);
+    context.createCanvas(width, height);
+
+    context.angleMode("degrees");
+    context.rectMode("center"); // set (0,0) starting point of rects to center position instead of top left
   };
 
   context.draw = () => {
-    // runs every frame, main method to draw and render on the canvas
-  };
+    context.background(10, 20, 30);
+    context.strokeWeight(2)
+    context.noFill();
 
-  context.mouseMoved = () => {
-    // one of many event methods to do stuff based on user input
+    context.translate(width / 2, height / 2);
+
+    for (let i = 0; i <= limit; i++) {
+      context.push();
+
+      if (i % 5 === 0) {
+        // context.stroke(getRandomStrokeColor());
+      } else {
+        context.stroke("#fff");
+      }
+
+      context.rotate(context.sin(context.frameCount + i * 3) * 100);
+
+      context.rect(0, 0, rectWidth - i * 3, rectHeight - i * 3, limit - i);
+
+      context.pop();
+    }
   };
 };
 
