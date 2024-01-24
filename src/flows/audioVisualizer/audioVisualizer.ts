@@ -40,7 +40,7 @@ const sketch = (context: p5) => {
   };
 
   context.draw = () => {
-    context.background("#000");
+    context.background(10, 20, 30);
     context.stroke(getRandomStrokeColor());
     context.strokeWeight(3);
     boundaries = {

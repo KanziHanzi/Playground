@@ -13,7 +13,7 @@ const sketch = (context: p5) => {
   };
 
   context.draw = () => {
-    context.background("#000");
+    context.background(10, 20, 30);
     boundaries = {
       x: context.windowWidth,
       y: context.windowHeight,
