@@ -87,4 +87,8 @@ export class Particle implements IParticle {
         return false;
     }
   }
+
+  public getPosition() {
+    return { x: this.position.x, y: this.position.y, z: this.position.z };
+  }
 }
