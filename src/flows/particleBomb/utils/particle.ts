@@ -10,6 +10,7 @@ export const createParticle = (context: p5InstanceExtensions) => {
     context.winMouseX + context.random(randomRange.x, randomRange.y),
     context.winMouseY + context.random(randomRange.x, randomRange.y)
   );
+
   const velocityVector = context.createVector(
     context.random(randomRange.x, randomRange.y),
     context.random(randomRange.x, randomRange.y)

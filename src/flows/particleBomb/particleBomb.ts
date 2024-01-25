@@ -2,8 +2,6 @@ import p5 from "p5";
 import { Boundaries, Particle } from "src/common";
 import { createParticle } from "./utils";
 
-const particleCount = 50;
-
 const sketch = (context: p5) => {
   const particles: Particle[] = [];
   const boundaries: Boundaries = {
@@ -49,6 +47,8 @@ const sketch = (context: p5) => {
   };
 
   context.mouseClicked = () => {
+    const particleCount = context.random(40, 90);
+
     for (let i = 0; i < particleCount; i++) {
       const particle = createParticle(context);
 
