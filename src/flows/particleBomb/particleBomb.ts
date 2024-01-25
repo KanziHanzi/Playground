@@ -12,7 +12,7 @@ const sketch = (context: p5) => {
     negativeX: 0,
     negativeY: 0,
   };
-  let freeze: boolean = false;
+  let stopMotion: boolean = false;
 
   context.setup = () => {
     context.createCanvas(context.windowWidth, context.windowHeight);
@@ -24,13 +24,24 @@ const sketch = (context: p5) => {
     particles.forEach((particle: Particle, index: number) => {
       if (particle.isOutOfBounds(boundaries)) {
         particles.splice(index, 1);
-      } else if (freeze) {
-        particle.freeze(5000);
-        particle.update();
-        particle.show();
-      } else {
-        particle.update();
-        particle.show();
+        return;
+      }
+
+      switch (true) {
+        case stopMotion && particle.isFrozen():
+          particle.show();
+          break;
+        case stopMotion && !particle.isFrozen():
+          particle.freeze();
+          particle.show();
+          break;
+        case !stopMotion && particle.isFrozen():
+          particle.resumeMotion();
+          particle.show();
+          break;
+        default:
+          particle.update();
+          particle.show();
       }
     });
 
@@ -50,7 +61,7 @@ const sketch = (context: p5) => {
 
     if (pressedKey !== "Space") return;
 
-    freeze = !freeze;
+    stopMotion = !stopMotion;
   };
 };
 

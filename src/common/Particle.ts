@@ -7,11 +7,19 @@ export type Boundaries = {
   negativeY: number;
 };
 
+type Position = {
+  x: number;
+  y: number;
+  z: number;
+};
+
 interface IParticle {
   show: () => void;
   update: (amplitude?: number) => void;
   freeze: (ms: number) => void;
+  resumeMotion: () => void;
   isOutOfBounds: (boundaries: Boundaries) => boolean;
+  getPosition: () => Position;
 }
 
 type ParticleProps = {
@@ -30,6 +38,7 @@ export class Particle implements IParticle {
   private acceleration: p5.Vector;
   private size: number;
   private color: string;
+  private frozen: boolean;
 
   constructor({
     context,
@@ -46,6 +55,7 @@ export class Particle implements IParticle {
     this.acceleration = acceleration;
     this.size = size;
     this.color = color;
+    this.frozen = false;
   }
 
   public update(amplitude?: number) {
@@ -65,13 +75,22 @@ export class Particle implements IParticle {
     this.context.ellipse(this.position.x, this.position.y, this.size);
   }
 
-  public freeze(ms: number) {
-    const frozen = this.acceleration.copy();
-    this.velocity.sub(frozen); // substract acceleration vector to freeze particle in place
+  public freeze(ms?: number) {
+    const accelerationVectorCopy = this.acceleration.copy();
+    this.velocity.sub(accelerationVectorCopy); // substract acceleration vector to freeze particle in place
+    this.frozen = true;
+
+    if (!ms) return;
 
     setTimeout(() => {
       this.velocity.add(this.acceleration);
+      this.frozen = false;
     }, ms);
+  }
+
+  public resumeMotion() {
+    this.velocity.add(this.acceleration);
+    this.frozen = false;
   }
 
   public isOutOfBounds(boundaries: Boundaries): boolean {
@@ -88,7 +107,11 @@ export class Particle implements IParticle {
     }
   }
 
-  public getPosition() {
+  public getPosition(): Position {
     return { x: this.position.x, y: this.position.y, z: this.position.z };
+  }
+
+  public isFrozen() {
+    return this.frozen;
   }
 }
