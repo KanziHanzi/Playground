@@ -1,12 +1,15 @@
 import p5, { p5InstanceExtensions } from "p5";
 import { getRandomStrokeColor } from "src/utils/randomStroke";
+import { drawShape } from "./utils";
 
 const circleDiameter = 50;
 const centerOffset = 100;
-const accelerationFactor = 0.3;
+const accelerationFactor = 0.1;
 
-let progress = 0; // animation progress between 0 and 360
-let rotationSpeed = 0.5;
+let progress; // animation progress between 0 and 360
+
+let rotationValue = 0;
+let rotationSpeed = 1;
 
 const sketch = (context: p5) => {
   context.setup = () => {
@@ -24,35 +27,37 @@ const sketch = (context: p5) => {
 
     context.translate(context.windowWidth / 2, context.windowHeight / 2);
 
-    if (progress <= 180) {
+    progress = context.map(rotationValue, 0, 360, 0, 1);
+
+    if (rotationValue <= 180) {
       rotationSpeed += accelerationFactor;
+    } else if (rotationValue >= 360) {
+      rotationValue = 0;
+      rotationSpeed = 1;
+      const color = getRandomStrokeColor();
+      context.fill(color);
+      context.stroke(color);
     } else {
       rotationSpeed -= accelerationFactor;
     }
 
-    console.log(rotationSpeed);
+    rotationValue = Math.floor(rotationValue + rotationSpeed);
 
-    progress = Math.floor(progress + rotationSpeed);
+    const scaleFactor = context.map(progress, 0, 0.5, 0.8, 1.6);
+    const negativeScaleFactor = context.map(progress, 0.5, 1, 1.6, 0.8);
 
-    context.rotate(progress);
     context.push();
+    if (progress <= 0.5) {
+      context.scale(scaleFactor);
+    } else {
+      context.scale(negativeScaleFactor);
+    }
 
-    context.scale(progress / 100);
+    context.rotate(rotationValue);
+
     drawShape(context, 0, -centerOffset, circleDiameter);
     context.pop();
   };
-};
-
-const drawShape = (
-  context: p5InstanceExtensions,
-  x: number,
-  y: number,
-  diameter: number,
-  color?: string
-) => {
-  if (color) context.fill(color);
-
-  return context.ellipse(x, y, diameter);
 };
 
 new p5(sketch);
