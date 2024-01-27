@@ -63,7 +63,7 @@ const sketch = (context: p5) => {
     const loadingBarProgress = context.map(progress, 0, 1, 0, 590);
 
     context.push();
-    context.rect(-295, 305, loadingBarProgress, 40, 1);
+    context.rect(-295, 305, loadingBarProgress, 40, 5);
 
     context.stroke("#fff");
     context.fill('#fff')
