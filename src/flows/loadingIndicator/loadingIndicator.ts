@@ -57,7 +57,31 @@ const sketch = (context: p5) => {
 
     drawShape(context, 0, -centerOffset, circleDiameter);
     context.pop();
+
+    drawLoadingBar(context);
+
+    const loadingBarProgress = context.map(progress, 0, 1, 0, 590);
+
+    context.push();
+    context.rect(-295, 305, loadingBarProgress, 40, 1);
+
+    context.stroke("#fff");
+    context.fill('#fff')
+    context.strokeWeight(1);
+
+    context.text(`${Math.floor(progress * 100)}%`, -20, 328);
+    context.pop();
   };
+};
+
+const drawLoadingBar = (context: p5InstanceExtensions) => {
+  context.push();
+  context.noFill();
+  context.stroke("#fff");
+  context.strokeWeight(1);
+
+  context.rect(-300, 300, 600, 50, 10);
+  context.pop();
 };
 
 new p5(sketch);
