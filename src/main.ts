@@ -2,4 +2,5 @@
 // import "src/flows/mouseTrail";
 // import "src/flows/sineWave";
 // import "src/flows/particleBomb";
-import "src/flows/loadingIndicator"
+// import "src/flows/loadingIndicator"
+import "src/flows/perlinNoise";
