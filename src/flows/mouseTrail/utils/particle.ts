@@ -1,6 +1,6 @@
 import p5, { p5InstanceExtensions } from "p5";
 import { Particle } from "src/common";
-import { getRandomStrokeColor } from "src/utils/randomStroke";
+import { getRandomStrokeColor } from "src/utils/color";
 
 const accelerationMultiplier = 0.1;
 
