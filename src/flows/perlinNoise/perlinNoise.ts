@@ -7,6 +7,7 @@ const particleCount = 2000;
 const noiseScale = 0.01;
 
 let backgroundColor: p5.Color;
+let backgroundAlpha: number = 30;
 
 const sketch = (context: p5) => {
   context.setup = () => {
@@ -14,7 +15,17 @@ const sketch = (context: p5) => {
     context.stroke(getRandomStrokeColor());
     context.strokeWeight(2);
 
-    backgroundColor = context.color(10, 20, 30, 55);
+    backgroundColor = context.color(10, 20, 30, backgroundAlpha);
+
+    const inputSlider = context.createInput("30", "range");
+    inputSlider.position(context.windowWidth / 2 - 50, 0);
+    inputSlider.attribute("min", "0");
+    inputSlider.attribute("max", "55");
+
+    inputSlider.elt.addEventListener("change", (event: any) => {
+      backgroundAlpha = event.target.value;
+      backgroundColor.setAlpha(backgroundAlpha);
+    });
 
     for (let i = 0; i < particleCount; i++) {
       const vector = context.createVector(
@@ -56,7 +67,7 @@ const sketch = (context: p5) => {
 
     context.noiseSeed(context.millis());
     context.stroke(getRandomStrokeColor());
-    backgroundColor.setAlpha(context.random(55));
+    context.background(0); // reset particle trails
   };
 
   const isOutOfBounds = (vector: p5.Vector) => {
