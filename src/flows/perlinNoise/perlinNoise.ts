@@ -1,4 +1,4 @@
-import p5, { Noise } from "p5";
+import p5 from "p5";
 import { getRandomStrokeColor } from "src/utils/color";
 
 const vectors: p5.Vector[] = [];
@@ -6,11 +6,15 @@ const vectors: p5.Vector[] = [];
 const particleCount = 2000;
 const noiseScale = 0.01;
 
+let backgroundColor: p5.Color;
+
 const sketch = (context: p5) => {
   context.setup = () => {
     context.createCanvas(context.windowWidth, context.windowHeight);
     context.stroke(getRandomStrokeColor());
     context.strokeWeight(2);
+
+    backgroundColor = context.color(10, 20, 30, 55);
 
     for (let i = 0; i < particleCount; i++) {
       const vector = context.createVector(
@@ -23,7 +27,7 @@ const sketch = (context: p5) => {
   };
 
   context.draw = () => {
-    context.background(10, 20);
+    context.background(backgroundColor);
 
     for (let i = 0; i < vectors.length; i++) {
       const vector = vectors[i];
@@ -50,8 +54,9 @@ const sketch = (context: p5) => {
 
     if (pressedKey !== "Space") return;
 
-    context.noiseSeed(context.random(300));
+    context.noiseSeed(context.millis());
     context.stroke(getRandomStrokeColor());
+    backgroundColor.setAlpha(context.random(55));
   };
 
   const isOutOfBounds = (vector: p5.Vector) => {
