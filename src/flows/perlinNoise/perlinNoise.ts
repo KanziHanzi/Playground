@@ -1,5 +1,6 @@
 import p5 from "p5";
 import { getRandomStrokeColor } from "src/utils/color";
+import { Boundaries, isOutOfBounds } from "./utils";
 
 const vectors: p5.Vector[] = [];
 
@@ -9,11 +10,20 @@ const noiseScale = 0.01;
 let backgroundColor: p5.Color;
 let backgroundAlpha: number = 30;
 
+let boundaries: Boundaries;
+
 const sketch = (context: p5) => {
   context.setup = () => {
     context.createCanvas(context.windowWidth, context.windowHeight);
     context.stroke(getRandomStrokeColor());
     context.strokeWeight(2);
+
+    boundaries = {
+      x: context.windowWidth,
+      negativeX: 0,
+      y: context.windowHeight,
+      negativeY: 0,
+    };
 
     backgroundColor = context.color(10, 20, 30, backgroundAlpha);
 
@@ -52,7 +62,7 @@ const sketch = (context: p5) => {
       vector.x += context.cos(angle);
       vector.y += context.sin(angle);
 
-      if (isOutOfBounds(vector)) {
+      if (isOutOfBounds(vector, boundaries)) {
         vector.x = context.random(context.windowWidth);
         vector.y = context.random(context.windowHeight);
       }
@@ -68,20 +78,6 @@ const sketch = (context: p5) => {
     context.noiseSeed(context.millis());
     context.stroke(getRandomStrokeColor());
     context.background(0); // reset particle trails
-  };
-
-  const isOutOfBounds = (vector: p5.Vector) => {
-    switch (true) {
-      case vector.x < 0:
-        return true;
-      case vector.x > context.windowWidth:
-        return true;
-      case vector.y < 0:
-        return true;
-      case vector.y > context.windowHeight:
-      default:
-        return false;
-    }
   };
 };
 

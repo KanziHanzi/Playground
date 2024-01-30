@@ -102,6 +102,7 @@ export class Particle implements IParticle {
       case this.position.y < boundaries.negativeY:
         return true;
       case this.position.y > boundaries.y:
+        return true;
       default:
         return false;
     }
