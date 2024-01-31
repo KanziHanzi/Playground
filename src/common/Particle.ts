@@ -69,8 +69,9 @@ export class Particle implements IParticle {
     }
   }
 
-  public show() {
-    this.context.noStroke();
+  public show(stroke?: boolean) {
+    if (!stroke) this.context.noStroke();
+
     this.context.fill(this.color);
     this.context.ellipse(this.position.x, this.position.y, this.size);
   }
@@ -106,6 +107,10 @@ export class Particle implements IParticle {
       default:
         return false;
     }
+  }
+
+  public applyForce(force: p5.Vector) {
+    this.acceleration.add(force);
   }
 
   public getPosition(): Position {
