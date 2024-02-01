@@ -3,10 +3,8 @@ import { Particle } from "src/common";
 import { createParticle } from "./utils";
 
 const cellSize = 20;
-let time = 0;
 
-const noiseIncrement = 0.01; // change this to a lower number for a smoother perlin noise value
-const timeIncrement = 0.00003; // change this to control how frequently the noise value changes
+const noiseScale = 0.1; // change this to a lower number for a smoother perlin noise value
 
 const particles: Particle[] = [];
 const particleCount = 200;
@@ -14,13 +12,17 @@ const particleCount = 200;
 let rows: number;
 let columns: number;
 
+let flowField: number[][];
+
 const sketch = (context: p5) => {
   context.setup = () => {
     context.createCanvas(context.windowWidth, context.windowHeight);
     context.stroke("#000");
 
-    rows = Math.floor(context.windowHeight / cellSize);
-    columns = Math.floor(context.windowWidth / cellSize);
+    rows = Math.floor(context.windowHeight / cellSize) + 1;
+    columns = Math.floor(context.windowWidth / cellSize) + 1;
+
+    flowField = generateFlowField(context, noiseScale);
 
     for (let i = 0; i < particleCount; i++) {
       const particle = createParticle(
@@ -33,44 +35,88 @@ const sketch = (context: p5) => {
   };
 
   context.draw = () => {
-    context.background("#fefefe");
+    context.background(10, 20, 30, 100);
 
-    let xOffset = 0;
-    for (let x = 0; x <= columns; x++) {
-      let yOffset = 0;
-      for (let y = 0; y <= rows; y++) {
-        const noise = context.noise(xOffset, yOffset, time);
-        const angle = noise * context.TWO_PI;
+    drawFlowField(context, flowField);
 
-        context.push();
-        context.translate(x * cellSize, y * cellSize);
+    drawParticles(context, particles);
+  };
+};
 
-        const vector = p5.Vector.fromAngle(angle);
+const generateFlowField = (
+  context: p5InstanceExtensions,
+  noiseScale: number
+) => {
+  const grid: number[][] = Array.from(Array(columns), () =>
+    new Array(rows).fill(0)
+  );
 
-        drawVector(context, vector);
-        context.pop();
+  for (let x = 0; x < columns; x++) {
+    for (let y = 0; y < rows; y++) {
+      const noise = context.noise(x * noiseScale, y * noiseScale);
+      const angle = noise * context.TWO_PI;
 
-        yOffset += noiseIncrement;
-      }
-      xOffset += noiseIncrement;
-      time += timeIncrement;
+      grid[x][y] = angle;
     }
+  }
 
-    particles.forEach((particle) => {
-      console.log(particles[1].getPosition());
+  return grid;
+};
 
-      particle.wrapAround();
-      particle.update();
-      particle.show(true);
-    });
-  };
+const drawFlowField = (
+  context: p5InstanceExtensions,
+  flowField: number[][]
+) => {
+  for (let x = 0; x < columns; x++) {
+    for (let y = 0; y < rows; y++) {
+      const angle = flowField[x][y];
 
-  const drawVector = (context: p5InstanceExtensions, vector: p5.Vector) => {
-    const drawX = vector.x * cellSize;
-    const drawY = vector.y * cellSize;
+      const vector = p5.Vector.fromAngle(angle);
 
-    context.line(0, 0, drawX, drawY);
-  };
+      context.push();
+      context.translate(x * cellSize, y * cellSize);
+
+      context.stroke(
+        context.map(angle, 0, context.TWO_PI, 0, 255),
+        41,
+        41,
+        100
+      );
+
+      context.line(0, 0, vector.x * cellSize, vector.y * cellSize);
+
+      context.pop();
+    }
+  }
+};
+
+const drawParticles = (
+  context: p5InstanceExtensions,
+  particles: Particle[]
+) => {
+  particles.forEach((particle) => {
+    const particlePosition = particle.getPosition();
+    const { x, y } = particlePosition;
+
+    const columnIndex = Math.floor(x / cellSize);
+    const rowIndex = Math.floor(y / cellSize);
+
+    const angle = flowField[columnIndex][rowIndex];
+
+    const forceVector = p5.Vector.fromAngle(angle);
+
+    context.push();
+    context.noStroke();
+
+    particle.applyForce(forceVector);
+    particle.applyFriction(0.5);
+    particle.update();
+    particle.resetAcceleration();
+    particle.wrapAround();
+    particle.show(true);
+
+    context.pop();
+  });
 };
 
 new p5(sketch);
