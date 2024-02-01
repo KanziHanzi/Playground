@@ -69,6 +69,10 @@ export class Particle implements IParticle {
     }
   }
 
+  public resetAcceleration() {
+    this.acceleration.mult(0);
+  }
+
   public show(stroke?: boolean) {
     if (!stroke) this.context.noStroke();
 
@@ -110,26 +114,18 @@ export class Particle implements IParticle {
   }
 
   public wrapAround() {
-    switch (true) {
-      case this.position.x < 0:
-        this.position.x = this.context.windowWidth;
-        break;
-      case this.position.x > this.context.windowWidth:
-        this.position.x = 0;
-        break;
-      case this.position.y < 0:
-        this.position.y = this.context.windowHeight;
-        break;
-      case this.position.y > this.context.windowHeight:
-        this.position.y = 0;
-        break;
-      default:
-        return false;
-    }
+    this.position.x =
+      (this.position.x + this.context.windowWidth) % this.context.windowWidth;
+    this.position.y =
+      (this.position.y + this.context.windowHeight) % this.context.windowHeight;
   }
 
   public applyForce(force: p5.Vector) {
     this.acceleration.add(force);
+  }
+
+  public applyFriction(friction: number) {
+    this.velocity.mult(friction);
   }
 
   public getPosition(): Position {
