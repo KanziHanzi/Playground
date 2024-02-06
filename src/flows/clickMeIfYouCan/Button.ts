@@ -1,25 +1,5 @@
 import { p5InstanceExtensions } from "p5";
-
-type Position = {
-  x: number;
-  y: number;
-};
-
-type Dimensions = {
-  width: number;
-  height: number;
-};
-
-export type Hitbox = {
-  topLeftX: number;
-  topLeftY: number;
-  topRightX: number;
-  topRightY: number;
-  bottomLeftX: number;
-  bottomLeftY: number;
-  bottomRightX: number;
-  bottomRightY: number;
-};
+import { Dimensions, Hitbox, Position } from "./types";
 
 interface IButton {
   render: () => void;
