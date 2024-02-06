@@ -14,6 +14,7 @@ interface IButton {
   render: () => void;
   getPosition: () => Position;
   setPosition: (pos: Position) => void;
+  getDimensions: () => Dimensions;
 }
 
 class Button implements IButton {
@@ -48,7 +49,11 @@ class Button implements IButton {
   public setPosition(pos: Position): void {
     this.position = pos;
   }
+
+  public getDimensions(): Dimensions {
+    return this.dimensions;
+  }
 }
 
 export { Button };
-export type { IButton };
+export type { IButton, Dimensions, Position };
