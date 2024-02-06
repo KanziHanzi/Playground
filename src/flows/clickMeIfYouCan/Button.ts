@@ -25,18 +25,7 @@ class Button implements IButton {
 
     this.dimensions = dimensions;
 
-    const hitboxPadding = 50;
-
-    this.hitbox = {
-      topLeftX: this.position.x - hitboxPadding,
-      topLeftY: this.position.y - hitboxPadding,
-      topRightX: this.position.x + this.dimensions.width + hitboxPadding,
-      topRightY: this.position.y - hitboxPadding,
-      bottomLeftX: this.position.x - hitboxPadding,
-      bottomLeftY: this.position.y + this.dimensions.height + hitboxPadding,
-      bottomRightX: this.position.x + this.dimensions.width + hitboxPadding,
-      bottomRightY: this.position.y + this.dimensions.height + hitboxPadding,
-    };
+    this.hitbox = this.updateHitbox();
   }
 
   public render(): void {
@@ -89,6 +78,7 @@ class Button implements IButton {
 
   public setPosition(pos: Position): void {
     this.position = pos;
+    this.hitbox = this.updateHitbox();
   }
 
   public getDimensions(): Dimensions {
@@ -97,6 +87,21 @@ class Button implements IButton {
 
   public getHitbox(): Hitbox {
     return this.hitbox;
+  }
+
+  private updateHitbox(): Hitbox {
+    const padding = 50;
+
+    return {
+      topLeftX: this.position.x - padding,
+      topLeftY: this.position.y - padding,
+      topRightX: this.position.x + this.dimensions.width + padding,
+      topRightY: this.position.y - padding,
+      bottomLeftX: this.position.x - padding,
+      bottomLeftY: this.position.y + this.dimensions.height + padding,
+      bottomRightX: this.position.x + this.dimensions.width + padding,
+      bottomRightY: this.position.y + this.dimensions.height + padding,
+    };
   }
 }
 
