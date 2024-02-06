@@ -1,4 +1,4 @@
-import p5 from "p5";
+import p5, { p5InstanceExtensions } from "p5";
 import { Button, Dimensions, Position } from "./Button";
 
 type CollisionBox = {
@@ -11,6 +11,8 @@ type CollisionBox = {
   bottomRightX: number;
   bottomRightY: number;
 };
+
+const hitboxPadding = 50;
 
 const buttonWidth = 200;
 const buttonHeight = 60;
@@ -44,21 +46,22 @@ const sketch = (context: p5) => {
     buttonPosition = button.getPosition();
 
     hitbox = {
-      topLeftX: buttonPosition.x,
-      topLeftY: buttonPosition.y,
-      topRightX: buttonPosition.x + buttonDimensions.width,
-      topRightY: buttonPosition.y,
-      bottomLeftX: buttonPosition.x,
-      bottomLeftY: buttonPosition.y + buttonDimensions.height,
-      bottomRightX: buttonPosition.x + buttonDimensions.width,
-      bottomRightY: buttonPosition.y + buttonDimensions.height,
+      topLeftX: buttonPosition.x - hitboxPadding,
+      topLeftY: buttonPosition.y - hitboxPadding,
+      topRightX: buttonPosition.x + buttonDimensions.width + hitboxPadding,
+      topRightY: buttonPosition.y - hitboxPadding,
+      bottomLeftX: buttonPosition.x - hitboxPadding,
+      bottomLeftY: buttonPosition.y + buttonDimensions.height + hitboxPadding,
+      bottomRightX: buttonPosition.x + buttonDimensions.width + hitboxPadding,
+      bottomRightY: buttonPosition.y + buttonDimensions.height + hitboxPadding,
     };
 
     context.push();
-
+    context.noStroke();
     button.render();
-
     context.pop();
+
+    drawHitbox(context, hitbox);
   };
 
   context.mouseMoved = () => {
@@ -86,6 +89,31 @@ const sketch = (context: p5) => {
     } else {
       return false;
     }
+  };
+
+  const drawHitbox = (context: p5InstanceExtensions, hitbox: CollisionBox) => {
+    context.strokeWeight(1);
+    context.drawingContext.setLineDash([5, 5]);
+
+    context.push();
+    context.translate(hitbox.topLeftX, hitbox.topLeftY);
+    context.line(0, 0, hitbox.topRightX - hitbox.topLeftX, 0);
+    context.pop();
+
+    context.push();
+    context.translate(hitbox.topRightX, hitbox.topRightY);
+    context.line(0, 0, 0, hitbox.bottomRightY - hitbox.topRightY);
+    context.pop();
+
+    context.push();
+    context.translate(hitbox.bottomRightX, hitbox.bottomRightY);
+    context.line(0, 0, hitbox.bottomLeftX - hitbox.bottomRightX, 0);
+    context.pop();
+
+    context.push();
+    context.translate(hitbox.bottomLeftX, hitbox.bottomLeftY);
+    context.line(0, 0, 0, hitbox.topLeftY - hitbox.bottomLeftY);
+    context.pop();
   };
 };
 
