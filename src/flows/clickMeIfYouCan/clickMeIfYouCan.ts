@@ -12,13 +12,14 @@ const sketch = (context: p5) => {
 
   context.setup = () => {
     context.createCanvas(context.windowWidth, context.windowHeight);
-    context.background("#fefefe");
     context.fill("blue");
 
     button = createButton(context, buttonWidth, buttonHeight);
   };
 
   context.draw = () => {
+    context.background("#fefefe");
+
     context.push();
     context.noStroke();
     button.render();
@@ -31,6 +32,10 @@ const sketch = (context: p5) => {
     mousePosition = { x: context.mouseX, y: context.mouseY };
 
     if (isColliding(mousePosition, button.getHitbox())) {
+      button.setPosition({
+        x: context.random(context.windowWidth),
+        y: context.random(context.windowHeight),
+      });
       context.fill("orange");
     } else {
       context.fill("blue");
