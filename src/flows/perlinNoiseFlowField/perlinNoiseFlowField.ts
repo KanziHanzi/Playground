@@ -13,6 +13,7 @@ let rows: number;
 let columns: number;
 
 let flowField: number[][];
+let strokeShade: number[][];
 
 const sketch = (context: p5) => {
   context.setup = () => {
@@ -50,16 +51,23 @@ const generateFlowField = (
   const grid: number[][] = Array.from(Array(columns), () =>
     new Array(rows).fill(0)
   );
+  const strokes: number[][] = Array.from(Array(columns), () =>
+    new Array(rows).fill(0)
+  );
 
   for (let x = 0; x < columns; x++) {
     for (let y = 0; y < rows; y++) {
       const noise = context.noise(x * noiseScale, y * noiseScale);
       const angle = noise * context.TWO_PI;
 
+      const shade = context.map(angle, 0, context.TWO_PI, 0, 255);
+
+      strokes[x][y] = shade;
       grid[x][y] = angle;
     }
   }
 
+  strokeShade = strokes;
   return grid;
 };
 
@@ -76,12 +84,7 @@ const drawFlowField = (
       context.push();
       context.translate(x * cellSize, y * cellSize);
 
-      context.stroke(
-        context.map(angle, 0, context.TWO_PI, 0, 255),
-        41,
-        41,
-        100
-      );
+      context.stroke(strokeShade[x][y], 41, 41, 100);
 
       context.line(0, 0, vector.x * cellSize, vector.y * cellSize);
 
