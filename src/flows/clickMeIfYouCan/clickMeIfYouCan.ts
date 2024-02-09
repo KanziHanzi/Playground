@@ -22,7 +22,23 @@ const sketch = (context: p5) => {
 
     context.push();
     context.noStroke();
+
+    const angle = context.atan2(
+      button.getCenterPoint().y - context.mouseY,
+      button.getCenterPoint().x - context.mouseX
+    );
+
     button.render();
+    context.pop();
+
+    context.push();
+    context.drawingContext.setLineDash([]);
+    context.line(
+      context.mouseX,
+      context.mouseY,
+      button.getCenterPoint().x,
+      button.getCenterPoint().y
+    );
     context.pop();
 
     button.showHitbox();
@@ -32,10 +48,10 @@ const sketch = (context: p5) => {
     mousePosition = { x: context.mouseX, y: context.mouseY };
 
     if (isColliding(mousePosition, button.getHitbox())) {
-      button.setPosition({
-        x: context.random(context.windowWidth),
-        y: context.random(context.windowHeight),
-      });
+      // button.setPosition({
+      //   x: context.random(context.windowWidth),
+      //   y: context.random(context.windowHeight),
+      // });
       context.fill("orange");
     } else {
       context.fill("blue");
