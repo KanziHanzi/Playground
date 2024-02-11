@@ -8,11 +8,13 @@ interface IButton {
   getDimensions: () => Dimensions;
   showHitbox: () => void;
   getCenterPoint: () => void;
+  resetPosition: () => void;
 }
 
 class Button implements IButton {
   private context: p5InstanceExtensions;
   private position: Position;
+  private startingPostion: Position;
   private dimensions: Dimensions;
   private hitbox: Hitbox;
   private centerPoint: Position;
@@ -24,6 +26,7 @@ class Button implements IButton {
   ) {
     this.context = context;
     this.position = startingPosition;
+    this.startingPostion = startingPosition;
 
     this.dimensions = dimensions;
 
@@ -82,8 +85,8 @@ class Button implements IButton {
 
   public setPosition(pos: Position): void {
     this.position = pos;
-    this.hitbox = this.updateHitbox();
-    this.centerPoint = this.updateCenterPoint();
+    // this.hitbox = this.updateHitbox();
+    // this.centerPoint = this.updateCenterPoint();
   }
 
   public getDimensions(): Dimensions {
@@ -96,6 +99,12 @@ class Button implements IButton {
 
   public getCenterPoint(): Position {
     return this.centerPoint;
+  }
+
+  public resetPosition(): void {
+    this.position = this.startingPostion;
+    this.hitbox = this.updateHitbox();
+    this.centerPoint = this.updateCenterPoint();
   }
 
   private updateHitbox(): Hitbox {
