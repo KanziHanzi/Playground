@@ -1,38 +1,41 @@
-import { p5InstanceExtensions } from "p5";
+import p5, { p5InstanceExtensions } from "p5";
 import { Dimensions, Hitbox, Position } from "./types";
 
 interface IButton {
   render: () => void;
-  getPosition: () => Position;
-  setPosition: (pos: Position) => void;
   getDimensions: () => Dimensions;
   showHitbox: () => void;
-  getCenterPoint: () => void;
+  getPosition: () => p5.Vector;
+  updatePosition: (pos: p5.Vector) => void;
   resetPosition: () => void;
+  getPivotPoint: () => void;
 }
 
 class Button implements IButton {
   private context: p5InstanceExtensions;
-  private position: Position;
-  private startingPostion: Position;
+  private position: p5.Vector;
+  private startingPostion: p5.Vector;
   private dimensions: Dimensions;
   private hitbox: Hitbox;
-  private centerPoint: Position;
+  private pivotPoint: Position;
 
   constructor(
     context: p5InstanceExtensions,
-    startingPosition: Position,
+    startingPosition: p5.Vector,
     dimensions: Dimensions
   ) {
     this.context = context;
     this.position = startingPosition;
-    this.startingPostion = startingPosition;
+
+    this.startingPostion = this.position.copy();
+
+    this.pivotPoint = { x: this.startingPostion.x, y: this.startingPostion.y };
 
     this.dimensions = dimensions;
 
     this.hitbox = this.updateHitbox();
 
-    this.centerPoint = this.updateCenterPoint();
+    this.context.rectMode("center");
   }
 
   public render(): void {
@@ -79,14 +82,12 @@ class Button implements IButton {
     this.context.pop();
   }
 
-  public getPosition(): Position {
+  public getPosition(): p5.Vector {
     return this.position;
   }
 
-  public setPosition(pos: Position): void {
-    this.position = pos;
-    // this.hitbox = this.updateHitbox();
-    // this.centerPoint = this.updateCenterPoint();
+  public updatePosition(pos: p5.Vector): void {
+    this.position = this.position.add(pos);
   }
 
   public getDimensions(): Dimensions {
@@ -97,36 +98,31 @@ class Button implements IButton {
     return this.hitbox;
   }
 
-  public getCenterPoint(): Position {
-    return this.centerPoint;
+  public resetPosition(): void {
+    this.position.x = this.startingPostion.x;
+    this.position.y = this.startingPostion.y;
   }
 
-  public resetPosition(): void {
-    this.position = this.startingPostion;
-    this.hitbox = this.updateHitbox();
-    this.centerPoint = this.updateCenterPoint();
+  public getPivotPoint(): Position {
+    return this.pivotPoint;
   }
 
   private updateHitbox(): Hitbox {
     const padding = 50;
 
     return {
-      topLeftX: this.position.x - padding,
-      topLeftY: this.position.y - padding,
-      topRightX: this.position.x + this.dimensions.width + padding,
-      topRightY: this.position.y - padding,
-      bottomLeftX: this.position.x - padding,
-      bottomLeftY: this.position.y + this.dimensions.height + padding,
-      bottomRightX: this.position.x + this.dimensions.width + padding,
-      bottomRightY: this.position.y + this.dimensions.height + padding,
+      topLeftX: this.position.x - this.dimensions.width / 2 - padding,
+      topLeftY: this.position.y - this.dimensions.height / 2 - padding,
+
+      topRightX: this.position.x + this.dimensions.width / 2 + padding,
+      topRightY: this.position.y - this.dimensions.height / 2 - padding,
+
+      bottomLeftX: this.position.x - this.dimensions.width / 2 - padding,
+      bottomLeftY: this.position.y + this.dimensions.height / 2 + padding,
+
+      bottomRightX: this.position.x + this.dimensions.width / 2 + padding,
+      bottomRightY: this.position.y + this.dimensions.height / 2 + padding,
     };
-  }
-
-  private updateCenterPoint(): Position {
-    const centerX = this.position.x + this.dimensions.width / 2;
-    const centerY = this.position.y + this.dimensions.height / 2;
-
-    return { x: centerX, y: centerY };
   }
 }
 

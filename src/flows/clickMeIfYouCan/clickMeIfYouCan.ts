@@ -9,15 +9,14 @@ const buttonHeight = 60;
 const sketch = (context: p5) => {
   let button: Button;
   let mousePosition: Position;
-  let buttonPosition: Position;
+  let pivotPoint: Position;
 
   context.setup = () => {
     context.createCanvas(context.windowWidth, context.windowHeight);
     context.fill("blue");
-    context.angleMode("degrees")
 
     button = createButton(context, buttonWidth, buttonHeight);
-    buttonPosition = button.getPosition();
+    pivotPoint = button.getPivotPoint();
   };
 
   context.draw = () => {
@@ -33,8 +32,8 @@ const sketch = (context: p5) => {
     context.line(
       context.mouseX,
       context.mouseY,
-      button.getCenterPoint().x,
-      button.getCenterPoint().y
+      button.getPosition().x,
+      button.getPosition().y
     );
     context.pop();
 
@@ -46,53 +45,32 @@ const sketch = (context: p5) => {
 
     if (isColliding(mousePosition, button.getHitbox())) {
       const angle = context.atan2(
-        button.getCenterPoint().y - context.mouseY,
-        button.getCenterPoint().x - context.mouseX
+        button.getPosition().y - context.mouseY,
+        button.getPosition().x - context.mouseX
       );
 
-      const maxDistanceX =
-        button.getCenterPoint().x - button.getHitbox().topLeftX;
+      const maxDistanceX = pivotPoint.x - button.getHitbox().topLeftX;
+      const maxDistanceY = pivotPoint.y - button.getHitbox().topLeftY;
 
-      const maxDistanceY =
-        button.getCenterPoint().y - button.getHitbox().topLeftY;
+      const distanceX = mousePosition.x - pivotPoint.x;
+      const distanceY = mousePosition.y - pivotPoint.y;
 
-      const distanceToCenterX = button.getCenterPoint().x - mousePosition.x;
-      const distanceToCenterY = button.getCenterPoint().y - mousePosition.y;
+      console.log(maxDistanceX - distanceX, maxDistanceY - distanceY);
 
-      let transformX: number;
-      let transformY: number;
+      const directionalForce = context.createVector(distanceX, distanceY);
 
-      if (angle >= 0) {
-        transformY = maxDistanceY - distanceToCenterY;
-      } else {
-        transformY = -maxDistanceY - distanceToCenterY;
-      }
+      const angleVector = p5.Vector.fromAngle(angle);
+      // console.log(vector.x, vector.y, mousePosition);
 
-      if (angle <= 90) {
-        transformX = maxDistanceX - distanceToCenterX;
-      } else {
-        transformX = -maxDistanceX - distanceToCenterX;
-      }
+      console.log(angleVector);
 
-      console.log(angle);
-
-      button.setPosition({
-        x: buttonPosition.x + transformX,
-        y: buttonPosition.y + transformY,
-      });
-
-      // console.log(angle);
-      // context.rotate(180);
+      button.updatePosition(angleVector);
 
       context.fill("orange");
     } else {
       button.resetPosition();
       context.fill("blue");
     }
-  };
-
-  const getDistance = (): Position => {
-    return { x: 0, y: 0 };
   };
 };
 
