@@ -1,7 +1,7 @@
-// import "src/flows/audioVisualizer";
-// import "src/flows/mouseTrail";
-// import "src/flows/sineWave";
-// import "src/flows/particleBomb";
-// import "src/flows/loadingIndicator"
-// import "src/flows/perlinNoiseTrajectory";
-import "src/flows/perlinNoiseFlowField";
+// import "src/sketches/audioVisualizer";
+// import "src/sketches/mouseTrail";
+// import "src/sketches/sineWave";
+// import "src/sketches/particleBomb";
+// import "src/sketches/loadingIndicator"
+// import "src/sketches/perlinNoiseTrajectory";
+import "src/sketches/perlinNoiseFlowField";
