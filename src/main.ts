@@ -5,4 +5,4 @@
 // import "src/flows/loadingIndicator"
 // import "src/flows/perlinNoiseTrajectory";
 // import "src/flows/perlinNoiseFlowField";
-import "src/flows/clickMeIfYouCan";
+import "src/sketches/clickMeIfYouCan";
