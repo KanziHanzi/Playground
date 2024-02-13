@@ -24,6 +24,10 @@ const sketch = (context: p5) => {
 
     context.push();
     context.noStroke();
+
+    context.constrain(button.getPosition().x, 500, 600);
+    context.constrain(button.getPosition().y, 400, 600);
+
     button.render();
     context.pop();
 
@@ -49,22 +53,30 @@ const sketch = (context: p5) => {
         button.getPosition().x - context.mouseX
       );
 
-      const maxDistanceX = pivotPoint.x - button.getHitbox().topLeftX;
-      const maxDistanceY = pivotPoint.y - button.getHitbox().topLeftY;
+      // const maxDistanceX = pivotPoint.x - button.getHitbox().topLeftX;
+      // const maxDistanceY = pivotPoint.y - button.getHitbox().topLeftY;
 
       const distanceX = mousePosition.x - pivotPoint.x;
       const distanceY = mousePosition.y - pivotPoint.y;
 
-      console.log(maxDistanceX - distanceX, maxDistanceY - distanceY);
+      const previousDistanceX = context.pmouseX - pivotPoint.x;
+      const previousDistanceY = context.pmouseY - pivotPoint.y;
 
-      const directionalForce = context.createVector(distanceX, distanceY);
+      const totalDistance = distanceX + distanceY;
+      const previousTotalDistance = previousDistanceX + previousDistanceY;
+
+      console.log(totalDistance - previousTotalDistance);
+
+      console.log(button.getPosition().x);
 
       const angleVector = p5.Vector.fromAngle(angle);
-      // console.log(vector.x, vector.y, mousePosition);
 
-      console.log(angleVector);
-
-      button.updatePosition(angleVector);
+      // if (totalDistance - previousTotalDistance > 0) {
+      //   button.updatePosition(angleVector, "sub");
+      // } else {
+      //   button.updatePosition(angleVector, "add");
+      // }
+      button.updatePosition(angleVector, "add");
 
       context.fill("orange");
     } else {

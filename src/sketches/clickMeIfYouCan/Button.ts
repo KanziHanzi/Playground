@@ -1,12 +1,14 @@
 import p5, { p5InstanceExtensions } from "p5";
 import { Dimensions, Hitbox, Position } from "./types";
 
+type updateAction = "add" | "sub";
+
 interface IButton {
   render: () => void;
   getDimensions: () => Dimensions;
   showHitbox: () => void;
   getPosition: () => p5.Vector;
-  updatePosition: (pos: p5.Vector) => void;
+  updatePosition: (pos: p5.Vector, action: updateAction) => void;
   resetPosition: () => void;
   getPivotPoint: () => void;
 }
@@ -86,8 +88,14 @@ class Button implements IButton {
     return this.position;
   }
 
-  public updatePosition(pos: p5.Vector): void {
-    this.position = this.position.add(pos);
+  public updatePosition(pos: p5.Vector, action: updateAction): void {
+    if (action === "add") {
+      this.position = this.position.add(pos);
+    }
+
+    if (action === "sub") {
+      this.position = this.position.sub(pos);
+    }
   }
 
   public getDimensions(): Dimensions {
