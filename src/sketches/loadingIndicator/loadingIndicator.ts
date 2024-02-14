@@ -1,5 +1,5 @@
 import p5 from "p5";
-import { getRandomStrokeColor, setColor } from "src/utils/color";
+import { getRandomStrokeColor, setColor } from "src/utils";
 import {
   animateLoadingBar,
   drawLoadingBar,

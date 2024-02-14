@@ -1,5 +1,5 @@
 import p5 from "p5";
-import { getRandomStrokeColor } from "src/utils/color";
+import { getRandomStrokeColor } from "src/utils";
 import { Boundaries, isOutOfBounds } from "./utils";
 
 const vectors: p5.Vector[] = [];
