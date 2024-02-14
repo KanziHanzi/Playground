@@ -1,7 +1,7 @@
 import p5 from "p5";
 import "p5/lib/addons/p5.sound";
 import { drawCircle, handlePlayback } from "./utils";
-import { getRandomStrokeColor } from "src/utils/color";
+import { getRandomStrokeColor } from "src/utils";
 import { createParticle } from "./utils";
 import { Boundaries, Particle } from "src/common";
 

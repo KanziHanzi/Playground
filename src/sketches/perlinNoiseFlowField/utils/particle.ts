@@ -1,6 +1,6 @@
 import { p5InstanceExtensions } from "p5";
 import { Particle } from "src/common";
-import { getRandomStrokeColor } from "src/utils/color";
+import { getRandomStrokeColor } from "src/utils";
 
 export const createParticle = (
   context: p5InstanceExtensions,
