@@ -2,12 +2,13 @@ import p5, { p5InstanceExtensions } from "p5";
 import { isPrimeNumber } from "src/utils";
 
 let angle = 0;
-let scaleFactor = 2;
+let scaleFactor = 3;
 
 const friction = 0.95;
 
 const maxNumber = 10000;
 const primeNumbers: PrimeNumber[] = [];
+const view: View = { width: 0, height: 0 };
 
 const sketch = (context: p5) => {
   context.setup = () => {
@@ -33,14 +34,18 @@ const sketch = (context: p5) => {
     context.background(10, 20, 30);
     context.translate(context.windowWidth / 2, context.windowHeight / 2);
 
+    view.width = context.windowWidth / scaleFactor;
+    view.height = context.windowHeight / scaleFactor;
+
     context.scale(scaleFactor);
     if (scaleFactor > 0.1) {
       scaleFactor -= 0.01 * friction;
-      console.log(context)
     }
 
-    primeNumbers.forEach((prime) => {
-      prime.show();
+    primeNumbers.forEach((element) => {
+      if (element.isInView(view)) {
+        element.show();
+      }
     });
   };
 };
@@ -48,6 +53,11 @@ const sketch = (context: p5) => {
 type Position = {
   x: number;
   y: number;
+};
+
+type View = {
+  width: number;
+  height: number;
 };
 class PrimeNumber {
   context: p5InstanceExtensions;
@@ -65,12 +75,27 @@ class PrimeNumber {
   }
 
   public show(): void {
+    this.context.push()
+    this.context.textSize(12 * scaleFactor);
+    console.log(12 * scaleFactor)
     this.context.text(this.content, this.position.x, this.position.y);
+    this.context.pop()
   }
 
-  // public isVisible(): boolean {
-
-  // }
+  public isInView(view: View): boolean {
+    switch (true) {
+      case this.position.x < -view.width:
+        return false;
+      case this.position.x > view.width:
+        return false;
+      case this.position.y < -view.height:
+        return false;
+      case this.position.y > view.height:
+        return false;
+      default:
+        return true;
+    }
+  }
 }
 
 new p5(sketch);
