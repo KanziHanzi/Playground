@@ -2,11 +2,11 @@ import p5, { p5InstanceExtensions } from "p5";
 import { isPrimeNumber } from "src/utils";
 
 let angle = 0;
-let scaleFactor = 3;
+let scaleFactor = 5;
 
 const friction = 0.95;
 
-const maxNumber = 10000;
+const maxNumber = 50000;
 const primeNumbers: PrimeNumber[] = [];
 const view: View = { width: 0, height: 0 };
 
@@ -15,6 +15,7 @@ const sketch = (context: p5) => {
     context.createCanvas(context.windowWidth, context.windowHeight);
     context.fill("#fefefe");
     context.noStroke();
+    context.angleMode("degrees");
 
     for (let i = 1; i <= maxNumber; i++) {
       if (isPrimeNumber(i)) {
@@ -38,7 +39,7 @@ const sketch = (context: p5) => {
     view.height = context.windowHeight / scaleFactor;
 
     context.scale(scaleFactor);
-    if (scaleFactor > 0.1) {
+    if (!primeNumbers[primeNumbers.length - 1].isInView(view)) {
       scaleFactor -= 0.01 * friction;
     }
 
@@ -63,6 +64,7 @@ class PrimeNumber {
   context: p5InstanceExtensions;
   position: Position;
   content: number;
+  fontSize: number;
 
   constructor(
     context: p5InstanceExtensions,
@@ -72,14 +74,23 @@ class PrimeNumber {
     this.context = context;
     this.position = position;
     this.content = content;
+
+    const size = context.map(this.content, 1, maxNumber, 5, 500);
+
+    this.fontSize = size;
   }
 
   public show(): void {
-    this.context.push()
-    this.context.textSize(12 * scaleFactor);
-    console.log(12 * scaleFactor)
-    this.context.text(this.content, this.position.x, this.position.y);
-    this.context.pop()
+    this.context.push();
+
+    if (scaleFactor > 0.5) {
+      this.context.textSize(this.fontSize);
+      this.context.text(this.content, this.position.x, this.position.y);
+    } else {
+      this.context.rect(this.position.x, this.position.y, this.fontSize);
+    }
+
+    this.context.pop();
   }
 
   public isInView(view: View): boolean {
