@@ -1,10 +1,16 @@
 import p5, { p5InstanceExtensions } from "p5";
-import { isPrimeNumber } from "src/utils";
+import { degreesToRadians, isPrimeNumber } from "src/utils";
 
 let angle = 0;
-let scaleFactor = 5;
+let scale = 50;
 
-const friction = 0.95;
+let friction = 0.95;
+let scaleFactor;
+
+let rotationAngle = 0;
+let rotationFactor = 0.1;
+
+let angleMode: "radians" | "degrees";
 
 const maxNumber = 50000;
 const primeNumbers: PrimeNumber[] = [];
@@ -16,6 +22,12 @@ const sketch = (context: p5) => {
     context.fill("#fefefe");
     context.noStroke();
     context.angleMode("degrees");
+    angleMode = context.angleMode();
+
+    rotationFactor =
+      angleMode === "radians"
+        ? degreesToRadians(rotationFactor)
+        : rotationFactor;
 
     for (let i = 1; i <= maxNumber; i++) {
       if (isPrimeNumber(i)) {
@@ -33,14 +45,22 @@ const sketch = (context: p5) => {
 
   context.draw = () => {
     context.background(10, 20, 30);
+    context.text(context.frameRate(), 10, 10);
     context.translate(context.windowWidth / 2, context.windowHeight / 2);
 
-    view.width = context.windowWidth / scaleFactor;
-    view.height = context.windowHeight / scaleFactor;
+    view.width = context.windowWidth / scale;
+    view.height = context.windowHeight / scale;
 
-    context.scale(scaleFactor);
+    context.scale(scale);
     if (!primeNumbers[primeNumbers.length - 1].isInView(view)) {
-      scaleFactor -= 0.01 * friction;
+      friction = context.map(scale, 30, 0.1, 0.95, 1);
+      scaleFactor = context.map(scale, 30, 0.1, 0.1, 0.001);
+
+      scale -= scaleFactor * friction;
+    } else {
+      rotationAngle += rotationFactor;
+
+      context.rotate(rotationAngle);
     }
 
     primeNumbers.forEach((element) => {
@@ -75,7 +95,7 @@ class PrimeNumber {
     this.position = position;
     this.content = content;
 
-    const size = context.map(this.content, 1, maxNumber, 5, 500);
+    const size = context.map(this.content, 1, maxNumber, 0.5, 500);
 
     this.fontSize = size;
   }
@@ -83,11 +103,11 @@ class PrimeNumber {
   public show(): void {
     this.context.push();
 
-    if (scaleFactor > 0.5) {
+    if (scale > 0.5) {
       this.context.textSize(this.fontSize);
       this.context.text(this.content, this.position.x, this.position.y);
     } else {
-      this.context.rect(this.position.x, this.position.y, this.fontSize);
+      this.context.ellipse(this.position.x, this.position.y, this.fontSize);
     }
 
     this.context.pop();
