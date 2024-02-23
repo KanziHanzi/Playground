@@ -1,5 +1,7 @@
-import p5, { p5InstanceExtensions } from "p5";
+import p5 from "p5";
 import { degreesToRadians, isPrimeNumber } from "src/utils";
+import { PrimeNumber, View } from "./PrimeNumber";
+import { ColorStop, drawGradientBackground } from "./utils";
 
 let angle = 0;
 let scale = 50;
@@ -15,6 +17,12 @@ let angleMode: "radians" | "degrees";
 const maxNumber = 50000;
 const primeNumbers: PrimeNumber[] = [];
 const view: View = { width: 0, height: 0 };
+
+const gradientSteps: ColorStop[] = [
+  { progress: 0, color: "#2b324f" },
+  { progress: 0.45, color: "#151728" },
+  { progress: 1, color: "#030411" },
+];
 
 const sketch = (context: p5) => {
   context.setup = () => {
@@ -36,7 +44,7 @@ const sketch = (context: p5) => {
         const x = Math.floor(distance * context.sin(angle));
         const y = Math.floor(distance * context.cos(angle));
 
-        const item = new PrimeNumber(context, { x, y }, i);
+        const item = new PrimeNumber(context, { x, y }, i, maxNumber);
         primeNumbers.push(item);
       }
       angle++;
@@ -44,8 +52,8 @@ const sketch = (context: p5) => {
   };
 
   context.draw = () => {
-    context.background(10, 20, 30);
-    context.text(context.frameRate(), 10, 10);
+    drawGradientBackground(context, gradientSteps);
+
     context.translate(context.windowWidth / 2, context.windowHeight / 2);
 
     view.width = context.windowWidth / scale;
@@ -65,68 +73,10 @@ const sketch = (context: p5) => {
 
     primeNumbers.forEach((element) => {
       if (element.isInView(view)) {
-        element.show();
+        element.show(scale);
       }
     });
   };
 };
-
-type Position = {
-  x: number;
-  y: number;
-};
-
-type View = {
-  width: number;
-  height: number;
-};
-class PrimeNumber {
-  context: p5InstanceExtensions;
-  position: Position;
-  content: number;
-  fontSize: number;
-
-  constructor(
-    context: p5InstanceExtensions,
-    position: Position,
-    content: number
-  ) {
-    this.context = context;
-    this.position = position;
-    this.content = content;
-
-    const size = context.map(this.content, 1, maxNumber, 0.5, 500);
-
-    this.fontSize = size;
-  }
-
-  public show(): void {
-    this.context.push();
-
-    if (scale > 0.5) {
-      this.context.textSize(this.fontSize);
-      this.context.text(this.content, this.position.x, this.position.y);
-    } else {
-      this.context.ellipse(this.position.x, this.position.y, this.fontSize);
-    }
-
-    this.context.pop();
-  }
-
-  public isInView(view: View): boolean {
-    switch (true) {
-      case this.position.x < -view.width:
-        return false;
-      case this.position.x > view.width:
-        return false;
-      case this.position.y < -view.height:
-        return false;
-      case this.position.y > view.height:
-        return false;
-      default:
-        return true;
-    }
-  }
-}
 
 new p5(sketch);
