@@ -29,7 +29,7 @@ const sketch = (context: p5) => {
     context.createCanvas(context.windowWidth, context.windowHeight);
     context.fill("#fefefe");
     context.noStroke();
-    context.angleMode("degrees");
+    // context.angleMode("degrees");
     angleMode = context.angleMode();
 
     rotationFactor =

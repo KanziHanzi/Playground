@@ -33,7 +33,7 @@ export class PrimeNumber {
   public show(scale: number): void {
     this.context.push();
 
-    if (scale > 0.5) {
+    if (scale > 0.2 && this.size * scale > 8) {
       this.context.textSize(this.size);
       this.context.text(this.content, this.position.x, this.position.y);
     } else {
