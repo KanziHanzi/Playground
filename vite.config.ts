@@ -9,6 +9,7 @@ export default defineConfig({
       p5: "p5",
     }),
   ],
+  base: '/Playground/',
   resolve: {
     alias: {
       src: path.resolve(__dirname, "./src"),
