@@ -4,5 +4,5 @@
 // import "src/sketches/particleBomb";
 // import "src/sketches/loadingIndicator"
 // import "src/sketches/perlinNoiseTrajectory";
-// import "src/sketches/perlinNoiseFlowField";
-import "src/sketches/primeSpiral"
+import "src/sketches/perlinNoiseFlowField";
+// import "src/sketches/primeSpiral"
