@@ -9,6 +9,11 @@ body {
   display: block;
 }
 
+main {
+  height: 100%;
+  width: 100%;
+}
+
 .button {
   padding: 12;
   background-color: white;
