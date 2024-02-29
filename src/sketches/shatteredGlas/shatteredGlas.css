@@ -13,4 +13,5 @@
   border-image: linear-gradient(115deg, #3a3a3b, #000) 70;
   border-width: 20px;
   border-style: solid;
+  box-shadow: 0 3px 50px #000;
 }

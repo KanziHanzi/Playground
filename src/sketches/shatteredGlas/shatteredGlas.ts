@@ -1,5 +1,7 @@
 import p5 from "p5";
 
+const lineCount = 10;
+
 const sketch = (context: p5) => {
   context.setup = () => {
     context.createCanvas(600, 800);
@@ -17,10 +19,24 @@ const sketch = (context: p5) => {
       frame.child(canvas);
     }
 
+    context.background("#FFFFF8");
   };
 
   context.draw = () => {
-    context.background("red");
+    for (let i = 0; i < lineCount; i++) {
+      context.line(
+        context.random(0, 600),
+        0,
+        context.random(0, 600),
+        800
+      );
+    }
+
+    context.noLoop();
+  };
+
+  context.mouseMoved = () => {
+    console.log(context.mouseX, context.mouseY);
   };
 };
 
