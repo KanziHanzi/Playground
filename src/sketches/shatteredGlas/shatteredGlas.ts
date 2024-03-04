@@ -6,7 +6,7 @@ type Position = {
   y: number;
 };
 
-const lineCount = 10;
+const lineCount = 50;
 
 const paintedPixels: Position[] = [];
 
@@ -39,9 +39,11 @@ const sketch = (context: p5) => {
     }
 
     for (let i = 0; i < lineCount; i++) {
+      const probability = context.random();
+
       const vector = context.createVector(
-        context.random(0, 600),
-        context.random(0, 800)
+        probability > 0.5 ? context.random(0, 600) : 0,
+        probability < 0.5 ? context.random(0, 800) : 0
       );
 
       const line = new Line(context, vector);
