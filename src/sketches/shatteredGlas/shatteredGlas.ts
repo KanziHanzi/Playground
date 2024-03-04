@@ -60,25 +60,24 @@ const sketch = (context: p5) => {
       line.drawCurrentPixel();
       line.updatePosition();
     } else {
-      if (accessIndex === lineCount - 1) return;
+      if (accessIndex === lineCount - 1) {
+        context.noLoop();
+      }
 
       accessIndex++;
     }
 
     if (
       paintedPixels.find((pixel) => {
-        const { x, y } = line.getPosition();
+        const { x, y } = line.getNextPosition();
         const drawingPosition = { x: Math.floor(x), y: Math.floor(y) };
 
-        const isColliding = drawingPosition.x === pixel.x && drawingPosition.y === pixel.y;
-        if (isColliding) {
-          console.log(drawingPosition, pixel)
-        }
+        const isColliding =
+          drawingPosition.x === pixel.x && drawingPosition.y === pixel.y;
 
-        return isColliding
+        return isColliding;
       })
     ) {
-      console.log("collision");
       if (accessIndex === lineCount - 1) return;
 
       accessIndex++;
@@ -132,6 +131,12 @@ class Line {
 
   public getPosition(): Position {
     const { x, y } = this.position;
+
+    return { x, y };
+  }
+
+  public getNextPosition(): Position {
+    const { x, y } = this.position.copy().add(this.velocity);
 
     return { x, y };
   }
