@@ -39,12 +39,7 @@ const sketch = (context: p5) => {
     }
 
     for (let i = 0; i < lineCount; i++) {
-      const probability = context.random();
-
-      const vector = context.createVector(
-        probability > 0.5 ? context.random(0, 600) : 0,
-        probability < 0.5 ? context.random(0, 800) : 0
-      );
+      const vector = context.createVector(0, 0);
 
       const line = new Line(context, vector);
 
@@ -56,16 +51,28 @@ const sketch = (context: p5) => {
   };
 
   context.draw = () => {
+    if (accessIndex === lineCount - 1) {
+      console.log("finished drawing");
+      context.noLoop();
+    }
+
     const line = lines[accessIndex];
+
+    if (line.getPosition().x === 0 && line.getPosition().y === 0) {
+      const index = Math.floor(context.random(0, paintedPixels.length));
+      const startingPosition = paintedPixels[index];
+
+      if (startingPosition) {
+        line.setStartingPosition(startingPosition);
+      } else {
+        line.setStartingPosition({ x: context.random(0, 600), y: 800 });
+      }
+    }
 
     if (!line.isOutOfBounds(boundaries)) {
       line.drawCurrentPixel();
       line.updatePosition();
     } else {
-      if (accessIndex === lineCount - 1) {
-        context.noLoop();
-      }
-
       accessIndex++;
     }
 
@@ -80,8 +87,6 @@ const sketch = (context: p5) => {
         return isColliding;
       })
     ) {
-      if (accessIndex === lineCount - 1) return;
-
       accessIndex++;
     }
 
@@ -141,6 +146,11 @@ class Line {
     const { x, y } = this.position.copy().add(this.velocity);
 
     return { x, y };
+  }
+
+  public setStartingPosition(pos: Position): void {
+    this.position.x = pos.x;
+    this.position.y = pos.y;
   }
 }
 
