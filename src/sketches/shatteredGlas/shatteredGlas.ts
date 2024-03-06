@@ -1,14 +1,10 @@
 import p5, { p5InstanceExtensions } from "p5";
 import { Boundaries } from "src/common";
+import { Position, getFrameBoundaries } from "src/utils";
 
-type Position = {
-  x: number;
-  y: number;
-};
+const lineCount = 10;
 
-const lineCount = 50;
-
-const paintedPixels: Position[] = [];
+let paintedPixels: Position[] = [];
 
 const lines: Line[] = [];
 
@@ -45,6 +41,8 @@ const sketch = (context: p5) => {
 
       lines.push(line);
     }
+
+    paintedPixels = getFrameBoundaries(boundaries);
 
     context.background("#FFFFF8");
     context.stroke("#000");
