@@ -1,8 +1,9 @@
-import p5, { p5InstanceExtensions } from "p5";
+import p5 from "p5";
 import { Boundaries } from "src/common";
 import { Position, getFrameBoundaries } from "src/utils";
+import { Line } from "./Line";
 
-const lineCount = 10;
+const lineCount = 100;
 
 let paintedPixels: Position[] = [];
 
@@ -19,7 +20,7 @@ const boundaries: Boundaries = {
 
 const sketch = (context: p5) => {
   context.setup = () => {
-    context.createCanvas(600, 800);
+    context.createCanvas(boundaries.x, boundaries.y);
 
     const main = context.select("main");
     const canvas = context.select("canvas");
@@ -45,7 +46,7 @@ const sketch = (context: p5) => {
     paintedPixels = getFrameBoundaries(boundaries);
 
     context.background("#FFFFF8");
-    context.stroke("#000");
+    context.strokeWeight(2);
   };
 
   context.draw = () => {
@@ -54,25 +55,39 @@ const sketch = (context: p5) => {
       context.noLoop();
     }
 
-    const line = lines[accessIndex];
+    const currentLine = lines[accessIndex];
 
-    if (line.getPosition().x === 0 && line.getPosition().y === 0) {
+    setStartingPosition(currentLine);
+
+    drawPosition(currentLine);
+
+    handleCollision(currentLine);
+
+    updatePaintedPixels(currentLine.getPosition());
+  };
+
+  const setStartingPosition = (element: Line) => {
+    if (element.getPosition().x === 0 && element.getPosition().y === 0) {
       const index = Math.floor(context.random(0, paintedPixels.length));
       const startingPosition = paintedPixels[index];
 
-      line.setStartingPosition(startingPosition);
+      element.setStartingPosition(startingPosition);
     }
+  };
 
-    if (!line.isOutOfBounds(boundaries)) {
-      line.drawCurrentPixel();
-      line.updatePosition();
+  const drawPosition = (element: Line) => {
+    if (!element.isOutOfBounds(boundaries)) {
+      element.drawCurrentPixel();
+      element.updatePosition();
     } else {
       accessIndex++;
     }
+  };
 
+  const handleCollision = (element: Line) => {
     if (
       paintedPixels.find((pixel) => {
-        const { x, y } = line.getNextPosition();
+        const { x, y } = element.getNextPosition();
         const drawingPosition = { x: Math.floor(x), y: Math.floor(y) };
 
         const isColliding =
@@ -83,69 +98,14 @@ const sketch = (context: p5) => {
     ) {
       accessIndex++;
     }
+  };
 
-    const { x, y } = line.getPosition();
+  const updatePaintedPixels = (pixel: Position) => {
+    const { x, y } = pixel;
+
     const flooredPixel = { x: Math.floor(x), y: Math.floor(y) };
     paintedPixels.push(flooredPixel);
   };
 };
-
-class Line {
-  context: p5InstanceExtensions;
-  position: p5.Vector;
-  velocity: p5.Vector;
-
-  constructor(context: p5InstanceExtensions, position: p5.Vector) {
-    this.context = context;
-    this.position = position;
-
-    const angle = context.random(0, context.TWO_PI);
-    const angleVector = p5.Vector.fromAngle(angle);
-
-    this.velocity = angleVector;
-  }
-
-  public drawCurrentPixel() {
-    const { x, y } = this.position;
-
-    this.context.point(x, y);
-  }
-
-  public updatePosition() {
-    this.position.add(this.velocity);
-  }
-
-  public isOutOfBounds(boundaries: Boundaries): boolean {
-    switch (true) {
-      case this.position.x < boundaries.negativeX:
-        return true;
-      case this.position.x > boundaries.x:
-        return true;
-      case this.position.y < boundaries.negativeY:
-        return true;
-      case this.position.y > boundaries.y:
-        return true;
-      default:
-        return false;
-    }
-  }
-
-  public getPosition(): Position {
-    const { x, y } = this.position;
-
-    return { x, y };
-  }
-
-  public getNextPosition(): Position {
-    const { x, y } = this.position.copy().add(this.velocity);
-
-    return { x, y };
-  }
-
-  public setStartingPosition(pos: Position): void {
-    this.position.x = pos.x;
-    this.position.y = pos.y;
-  }
-}
 
 new p5(sketch);
