@@ -18,9 +18,18 @@ const boundaries: Boundaries = {
   negativeY: 0,
 };
 
+let noiseActivated: boolean = false;
+
 const sketch = (context: p5) => {
   context.setup = () => {
     context.createCanvas(boundaries.x, boundaries.y);
+
+    const noiseSwitch = context.createInput("on", "checkbox");
+    noiseSwitch.id("noiseSwitch");
+    noiseSwitch.position(context.windowWidth / 2 - 310, 60);
+
+    const switchLabel = context.createP("enable noise");
+    switchLabel.position(context.windowWidth / 2 - 285, 43);
 
     const main = context.select("main");
     const canvas = context.select("canvas");
@@ -47,6 +56,12 @@ const sketch = (context: p5) => {
 
     context.background("#FFFFF8");
     context.strokeWeight(2);
+
+    const switchElement = document.getElementById("noiseSwitch");
+
+    switchElement?.addEventListener("click", () => {
+      noiseActivated = !noiseActivated;
+    });
   };
 
   context.draw = () => {
@@ -64,6 +79,10 @@ const sketch = (context: p5) => {
     handleCollision(currentLine);
 
     updatePaintedPixels(currentLine.getPosition());
+
+    if (noiseActivated) {
+      currentLine.applyNoise();
+    }
   };
 
   const setStartingPosition = (element: Line) => {

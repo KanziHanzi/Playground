@@ -6,12 +6,15 @@ export class Line {
   context: p5InstanceExtensions;
   position: p5.Vector;
   velocity: p5.Vector;
+  angle: number;
 
   constructor(context: p5InstanceExtensions, position: p5.Vector) {
     this.context = context;
     this.position = position;
 
     const angle = context.random(0, context.TWO_PI);
+    this.angle = angle;
+
     const angleVector = p5.Vector.fromAngle(angle);
 
     this.velocity = angleVector;
@@ -25,6 +28,17 @@ export class Line {
 
   public updatePosition() {
     this.position.add(this.velocity);
+  }
+
+  public applyNoise() {
+    const noise = this.context.noise(this.position.x, this.position.y);
+    const noiseAngle = noise * this.context.TWO_PI;
+
+    const newAngle = (this.angle + noiseAngle / 4);
+
+    const angleVector = p5.Vector.fromAngle(newAngle);
+
+    this.velocity = angleVector;
   }
 
   public isOutOfBounds(boundaries: Boundaries): boolean {
