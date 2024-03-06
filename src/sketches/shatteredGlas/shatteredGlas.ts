@@ -60,11 +60,7 @@ const sketch = (context: p5) => {
       const index = Math.floor(context.random(0, paintedPixels.length));
       const startingPosition = paintedPixels[index];
 
-      if (startingPosition) {
-        line.setStartingPosition(startingPosition);
-      } else {
-        line.setStartingPosition({ x: context.random(0, 600), y: 800 });
-      }
+      line.setStartingPosition(startingPosition);
     }
 
     if (!line.isOutOfBounds(boundaries)) {
