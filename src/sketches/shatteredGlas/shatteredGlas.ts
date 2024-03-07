@@ -26,10 +26,16 @@ const sketch = (context: p5) => {
 
     const noiseSwitch = context.createInput("on", "checkbox");
     noiseSwitch.id("noiseSwitch");
-    noiseSwitch.position(context.windowWidth / 2 - 310, 60);
+    noiseSwitch.position(
+      context.windowWidth / 2 - 310,
+      context.windowHeight / 2 - 450
+    );
 
     const switchLabel = context.createP("enable noise");
-    switchLabel.position(context.windowWidth / 2 - 285, 43);
+    switchLabel.position(
+      context.windowWidth / 2 - 285,
+      context.windowHeight / 2 - 467
+    );
 
     const main = context.select("main");
     const canvas = context.select("canvas");
