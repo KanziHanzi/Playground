@@ -4,11 +4,17 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="./src/assets/github.ico" />
     <link rel="stylesheet" href="./src/style.css" />
-    <link rel="stylesheet" href="./src/sketches/shatteredGlas/shatteredGlas.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Playground</title>
   </head>
   <body>
-    <script type="module" src="src/main.ts"></script>
+    <script type="module" src="/src/main"></script>
+    <div id="root">
+      <nav>
+        <a href="/" onclick="navigate()">Home</a>
+        <a href="/shatteredGlas" onclick="navigate()">Shattered Glas</a>
+        <a href="/primeSpiral" onclick="navigate()">Prime Spiral</a>
+      </nav>
+    </div>
   </body>
 </html>
