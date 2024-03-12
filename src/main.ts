@@ -6,4 +6,31 @@
 // import "src/sketches/perlinNoiseTrajectory";
 // import "src/sketches/perlinNoiseFlowField";
 // import "src/sketches/primeSpiral"
-import "src/sketches/shatteredGlas";
+// import "src/sketches/shatteredGlas";
+
+const routes = {
+  "/": "index.html",
+  "/shatteredGlas": "src/sketches/shatteredGlas/index.html",
+};
+
+const navigate = (event: Event) => {
+  event.preventDefault();
+
+  window.history.pushState({}, "", event.target.href);
+  handleRoute();
+};
+
+const handleRoute = async () => {
+  const path = window.location.pathname;
+  const route: string = routes[path];
+  const html = await fetch(route);
+
+  const test = await html.text();
+
+  document.querySelector("html").innerHTML = test;
+};
+
+window.navigate = navigate;
+window.onpopstate = handleRoute;
+
+handleRoute();
