@@ -10,17 +10,80 @@
   <body>
     <script type="module" src="/src/router"></script>
     <div id="root">
-      <nav>
-        <a href="/" onclick="navigate()">Home</a>
-        <a href="/shatteredGlas" onclick="navigate()">Shattered Glas</a>
-        <a href="/primeSpiral" onclick="navigate()">Prime Spiral</a>
-        <a href="/sineWave" onclick="navigate()">Sine Wave</a>
-        <a href="/perlinNoiseTrajectory" onclick="navigate()">Perlin Noise Trajectory</a>
-        <a href="/perlinNoiseFlowField" onclick="navigate()">Perlin Noise FlowField</a>
-        <a href="/particleBomb" onclick="navigate()">Particle Bomb</a>
-        <a href="/mouseTrail" onclick="navigate()">Mouse Trail</a>
-        <a href="/loadingIndicator" onclick="navigate()">Loading Indicator</a>
-        <a href="/audioVisualizer" onclick="navigate()">Audio Visualizer</a>
+
+      <nav class="navigation">
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/shatteredGlas" onclick="navigate()">
+              <img class="link__thumbnail" src="https://picsum.photos/600/400"></img>
+            </a>
+          </div>
+          <div class="navigation__caption">Shattered Glas</div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/primeSpiral" onclick="navigate()">
+              <img class="link__thumbnail" src="https://picsum.photos/600/400"></img>
+            </a>
+          </div>
+          <div class="navigation__caption">Prime Spiral</div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/sineWave" onclick="navigate()">
+              <img class="link__thumbnail" src="https://picsum.photos/600/400"></img>
+            </a>
+          </div>
+          <div class="navigation__caption">Sine Wave</div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/perlinNoiseTrajectory" onclick="navigate()">
+              <img class="link__thumbnail" src="https://picsum.photos/600/400"></img>
+            </a>
+          </div>
+          <div class="navigation__caption">Perlin Noise Trajectory</div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/perlinNoiseFlowField" onclick="navigate()">
+              <img class="link__thumbnail" src="https://picsum.photos/600/400"></img>
+            </a>
+          </div>
+          <div class="navigation__caption">Perlin Noise FlowField</div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/particleBomb" onclick="navigate()">
+              <img class="link__thumbnail" src="https://picsum.photos/600/400"></img>
+            </a>
+          </div>
+          <div class="navigation__caption">Particle Bomb</div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/mouseTrail" onclick="navigate()">
+              <img class="link__thumbnail" src="https://picsum.photos/600/400"></img>
+            </a>
+          </div>
+          <div class="navigation__caption">Mouse Trail</div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/loadingIndicator" onclick="navigate()">
+              <img class="link__thumbnail" src="https://picsum.photos/600/400"></img>
+            </a>
+          </div>
+          <div class="navigation__caption">Loading Indicator</div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/audioVisualizer" onclick="navigate()">
+              <img class="link__thumbnail" src="https://picsum.photos/600/400"></img>
+            </a>
+          </div>
+          <div class="navigation__caption">Audio Visualizer</div>
+        </div>
       </nav>
     </div>
   </body>
