@@ -42,8 +42,6 @@ const sketch = (context: p5) => {
           particle.show();
       }
     });
-
-    console.log(particles.length);
   };
 
   context.mouseClicked = () => {
