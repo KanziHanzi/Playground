@@ -45,6 +45,12 @@ const handleRoute = async () => {
   await import(/* @vite-ignore */ `/src/sketches${path}/index.ts`);
 };
 
+const navigation = document.querySelector(".navigation");
+
+navigation?.addEventListener("click", () => {
+  console.log(window.scrollY);
+});
+
 declare interface Window {
   navigate: (event: Event) => void;
 }
