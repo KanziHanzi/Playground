@@ -45,12 +45,6 @@ const handleRoute = async () => {
   await import(/* @vite-ignore */ `/src/sketches${path}/index.ts`);
 };
 
-const navigation = document.querySelector(".navigation");
-
-navigation?.addEventListener("click", () => {
-  console.log(window.scrollY);
-});
-
 declare interface Window {
   navigate: (event: Event) => void;
 }
@@ -58,4 +52,14 @@ declare interface Window {
 window.navigate = navigate;
 window.onpopstate = handleRoute;
 
-handleRoute();
+await handleRoute();
+
+declare interface Window {
+  navigate: (event: Event) => void;
+}
+
+const navigation = document.querySelector(".navigation");
+
+navigation?.addEventListener("scroll", () => {
+  console.log(navigation.scrollTop);
+});
