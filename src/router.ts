@@ -1,3 +1,5 @@
+const buildMode = import.meta.env.MODE;
+
 interface Routes {
   [index: string]: string;
 }
@@ -16,7 +18,7 @@ const routes: Routes = {
 };
 
 const navigate = (event: Event) => {
-  event.preventDefault();
+  event?.preventDefault();
   const { target } = event;
 
   if (!target) return;
@@ -42,7 +44,11 @@ const handleRoute = async () => {
   if (path === "/") return;
 
   // import the sketch associated to the current route
-  await import(/* @vite-ignore */ `/src/sketches${path}/index.ts`);
+  if (buildMode === "production") {
+    await import(`/src/sketches/${path.split("/")[1]}/index.js`);
+  } else {
+    await import(`/src/sketches/${path.split("/")[1]}/index.ts`);
+  }
 };
 
 declare interface Window {
