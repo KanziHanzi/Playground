@@ -52,14 +52,4 @@ declare interface Window {
 window.navigate = navigate;
 window.onpopstate = handleRoute;
 
-await handleRoute();
-
-declare interface Window {
-  navigate: (event: Event) => void;
-}
-
-const navigation = document.querySelector(".navigation");
-
-navigation?.addEventListener("scroll", () => {
-  console.log(navigation.scrollTop);
-});
+handleRoute();
