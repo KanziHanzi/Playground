@@ -4,11 +4,102 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/x-icon" href="./src/assets/github.ico" />
     <link rel="stylesheet" href="./src/style.css" />
-    <link rel="stylesheet" href="./src/sketches/shatteredGlas/shatteredGlas.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Playground</title>
   </head>
   <body>
-    <script type="module" src="src/main.ts"></script>
+    <script type="module" src="/src/router"></script>
+    <div id="root">
+      <nav class="navigation">
+        <div class="navigation__item navigation__item--first">
+          <div class="link__wrapper">
+            <a class="link" href="/shatteredGlas" onclick="navigate()">
+              <img
+                class="link__thumbnail"
+                src="src/assets/images/shatteredGlas.png"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/primeSpiral" onclick="navigate()">
+              <img
+                class="link__thumbnail"
+                src="src/assets/images/primeSpiral.png"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/sineWave" onclick="navigate()">
+              <img
+                class="link__thumbnail"
+                src="src/assets/images/sineWave.png"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/perlinNoiseTrajectory" onclick="navigate()">
+              <img
+                class="link__thumbnail"
+                src="src/assets/images/perlinNoiseTrajectory.png"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/perlinNoiseFlowField" onclick="navigate()">
+              <img
+                class="link__thumbnail"
+                src="src/assets/images/perlinNoiseFlowField.png"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/particleBomb" onclick="navigate()">
+              <img
+                class="link__thumbnail"
+                src="src/assets/images/particleBomb.png"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/mouseTrail" onclick="navigate()">
+              <img
+                class="link__thumbnail"
+                src="src/assets/images/mouseTrail.png"
+              />
+            </a>
+          </div>
+        </div>
+        <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/loadingIndicator" onclick="navigate()">
+              <img
+                class="link__thumbnail"
+                src="src/assets/images/loadingIndicator.png"
+              />
+            </a>
+          </div>
+        </div>
+        <!-- <div class="navigation__item">
+          <div class="link__wrapper">
+            <a class="link" href="/audioVisualizer" onclick="navigate()">
+              <img class="link__thumbnail" src="https://picsum.photos/600/400">
+            </a>
+          </div>
+          
+        </div> -->
+      </nav>
+    </div>
   </body>
 </html>
