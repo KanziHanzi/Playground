@@ -1,22 +1,17 @@
 import p5 from "p5";
 
+const CANVAS_DIMENSION = 600;
+
 const sketch = (context: p5) => {
-  context.preload = () => {
-    // pre load assets or do some stuff in advance before the "setup" method runs
-  };
-
   context.setup = () => {
-    // setup canvas and any static params that won't change during renderr
-    context.createCanvas(context.windowWidth, context.windowHeight);
+    context.createCanvas(CANVAS_DIMENSION, CANVAS_DIMENSION);
+    context.background("lightGrey");
+
+    const main = context.select("main");
+    main?.addClass("center_canvas");
   };
 
-  context.draw = () => {
-    // runs every frame, main method to draw and render on the canvas
-  };
-
-  context.mouseMoved = () => {
-    // one of many event methods to do stuff based on user input
-  }
+  context.draw = () => {};
 };
 
 new p5(sketch);

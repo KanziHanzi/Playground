@@ -92,3 +92,9 @@ main {
   border-style: solid;
   box-shadow: 0 3px 50px #000;
 }
+
+.center_canvas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
