@@ -15,6 +15,7 @@ const routes: Routes = {
   mouseTrail: "src/sketches/mouseTrail/index.html",
   loadingIndicator: "src/sketches/loadingIndicator/index.html",
   audioVisualizer: "src/sketches/audioVisualizer/index.html",
+  procedualTerrain: "src/sketches/procedualTerrain/index.html",
 };
 
 const handleRoute = async () => {
@@ -27,9 +28,8 @@ const handleRoute = async () => {
   const route: string = routes[path];
   const html = await fetch(route);
 
-  
   const routeMarkup = await html.text();
-  console.log(routeMarkup)
+  console.log(routeMarkup);
 
   const pageHtml = document.querySelector("html");
 

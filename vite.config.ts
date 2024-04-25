@@ -13,6 +13,10 @@ export default defineConfig({
     rollupOptions: {
       input: {
         home: path.resolve(__dirname, "index.html"),
+        procedualTerrain: path.resolve(
+          __dirname,
+          "src/sketches/procedualTerrain/index.html"
+        ),
         shatteredGlas: path.resolve(
           __dirname,
           "src/sketches/shatteredGlas/index.html"
