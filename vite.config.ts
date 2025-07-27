@@ -42,6 +42,10 @@ export default defineConfig({
           __dirname,
           "src/sketches/loadingIndicator/index.html"
         ),
+        infiniteTerrain: path.resolve(
+          __dirname,
+          "src/sketches/infiniteTerrain/index.html"
+        ),
       },
       output: {
         entryFileNames: "src/sketches/[name]/index.js",
