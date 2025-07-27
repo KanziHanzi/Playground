@@ -7,15 +7,15 @@ interface Routes {
 const routes: Routes = {
   "/": "index.html",
   shatteredGlas: "src/sketches/shatteredGlas/index.html",
-  primeSpiral: "src/sketches/primeSpiral/index.html",
-  sineWave: "src/sketches/sineWave/index.html",
   perlinNoiseTrajectory: "src/sketches/perlinNoiseTrajectory/index.html",
-  perlinNoiseFlowField: "src/sketches/perlinNoiseFlowField/index.html",
-  particleBomb: "src/sketches/particleBomb/index.html",
-  mouseTrail: "src/sketches/mouseTrail/index.html",
-  loadingIndicator: "src/sketches/loadingIndicator/index.html",
-  audioVisualizer: "src/sketches/audioVisualizer/index.html",
   infiniteTerrain: "src/sketches/infiniteTerrain/index.html",
+  perlinNoiseFlowField: "src/sketches/perlinNoiseFlowField/index.html",
+  primeSpiral: "src/sketches/primeSpiral/index.html",
+  particleBomb: "src/sketches/particleBomb/index.html",
+  audioVisualizer: "src/sketches/audioVisualizer/index.html",
+  mouseTrail: "src/sketches/mouseTrail/index.html",
+  sineWave: "src/sketches/sineWave/index.html",
+  loadingIndicator: "src/sketches/loadingIndicator/index.html",
 };
 
 const handleRoute = async () => {
