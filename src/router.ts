@@ -16,6 +16,7 @@ const routes: Routes = {
   mouseTrail: "src/sketches/mouseTrail/index.html",
   sineWave: "src/sketches/sineWave/index.html",
   loadingIndicator: "src/sketches/loadingIndicator/index.html",
+  terrainGenerator: "src/sketches/terrainGenerator/index.html",
 };
 
 const handleRoute = async () => {
@@ -41,9 +42,9 @@ const handleRoute = async () => {
 
   // import the sketch associated to the current route
   if (buildMode === "production") {
-    await import(`/src/sketches/${path}/index.js`);
+    await import(`./sketches/${path}/index.js`);
   } else {
-    await import(`/src/sketches/${path}/index.ts`);
+    await import(`./sketches/${path}/index.ts`);
   }
 };
 
