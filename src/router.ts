@@ -16,6 +16,7 @@ const routes: Routes = {
   mouseTrail: "src/sketches/mouseTrail/index.html",
   sineWave: "src/sketches/sineWave/index.html",
   loadingIndicator: "src/sketches/loadingIndicator/index.html",
+  discoGrid: "src/sketches/discoGrid/index.html",
 };
 
 const handleRoute = async () => {
