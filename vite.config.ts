@@ -50,6 +50,10 @@ export default defineConfig({
           __dirname,
           "src/sketches/discoGrid/index.html"
         ),
+        discoTerrain: path.resolve(
+          __dirname,
+          "src/sketches/discoTerrain/index.html"
+        ),
       },
       output: {
         entryFileNames: "src/sketches/[name]/index.js",

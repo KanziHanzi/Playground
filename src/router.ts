@@ -17,6 +17,7 @@ const routes: Routes = {
   sineWave: "src/sketches/sineWave/index.html",
   loadingIndicator: "src/sketches/loadingIndicator/index.html",
   discoGrid: "src/sketches/discoGrid/index.html",
+  discoTerrain: "src/sketches/discoTerrain/index.html",
 };
 
 const handleRoute = async () => {
