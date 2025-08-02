@@ -3,12 +3,14 @@ import p5, { Renderer } from "p5";
 const width = 600;
 const height = 600;
 
-const size = 50;
+const size = 10;
 
 let cols: number;
 let rows: number;
 
 let zOff = 0;
+
+const increment = 0.05;
 
 const sketch = (context: p5) => {
   context.setup = () => {
@@ -20,49 +22,54 @@ const sketch = (context: p5) => {
     rows = Math.floor(height / size);
 
     context.angleMode("degrees");
+    context.camera(0, -700, 1000);
   };
 
   context.draw = () => {
-    const { windowWidth, windowHeight } = context;
+    // context.orbitControl();
+    // drawAxesHelper(context);
 
-    context.orbitControl();
     context.background(220);
 
-    drawAxesHelper(context);
+    context.rotateX(90);
+    context.rotateZ(45);
+
+    context.push();
+    context.fill(220);
+    context.noStroke();
+    context.translate(0, 0, -100);
+    context.plane(width * 2, height * 2);
+    context.pop();
+
+    let r = context.noise(zOff + 0) * 255;
+    let g = context.noise(zOff + 10) * 255;
+    let b = context.noise(zOff + 20) * 255;
 
     context.translate(-(width - size) / 2, -(height - size) / 2);
 
     for (let i = 0; i < cols; i++) {
       for (let j = 0; j < rows; j++) {
         context.push();
+        context.fill(r, g, b);
         context.translate(size * i, size * j);
-        const depth = context.random(10, 300);
-        context.box(30, 30, depth);
+
+        const xNoise = i * increment;
+        const yNoise = j * increment;
+        const noise = context.noise(xNoise, yNoise, zOff);
+
+        const depth = context.map(noise, 0, 1, 250, 500);
+
+        context.box(size, size, depth);
         context.pop();
       }
-      zOff + 1;
+
+      zOff += 0.0003;
     }
   };
 
   context.mouseClicked = () => {
     console.log(context.mouseX, context.mouseY);
   };
-};
-
-const drawAxesHelper = (context: p5) => {
-  context.push();
-  // xAxis
-  context.stroke("red");
-  context.line(0, 0, 0, 999, 0, 0);
-
-  // yAxis
-  context.stroke("green");
-  context.line(0, 0, 0, 0, -999, 0);
-
-  // zAxis
-  context.stroke("blue");
-  context.line(0, 0, 0, 0, 0, 999);
-  context.pop();
 };
 
 new p5(sketch);
