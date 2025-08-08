@@ -40,6 +40,7 @@ main {
   border-radius: 5px;
   background-color: transparent;
   perspective: 1000px;
+  aspect-ratio: 5.33 / 3;
 }
 
 .navigation_item_inner {
